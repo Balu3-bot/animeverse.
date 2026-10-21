@@ -620,4 +620,138 @@ button:focus-visible {
     transition: none !important;
     scroll-behavior: auto !important;
   }
+}       
+
+
+
+
+
+/* ===== ANIMEVERSE VISUAL UPGRADE ===== */
+
+:root {
+  --av-bg: #0b0b16;
+  --av-surface: #151528;
+  --av-surface-hover: #201f3b;
+  --av-purple: #a78bfa;
+  --av-blue: #60a5fa;
+  --av-text: #f4f2ff;
+  --av-muted: #b7b5cc;
+  --av-border: rgba(167, 139, 250, 0.22);
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--av-bg);
+  color: var(--av-text);
+}
+
+::selection {
+  background: var(--av-purple);
+  color: #0b0b16;
+}
+
+a {
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+a:hover {
+  color: var(--av-blue);
+}
+
+.content-section {
+  padding-top: 48px;
+  padding-bottom: 48px;
+}
+
+.section-header {
+  margin-bottom: 28px;
+}
+
+.section-header h2 {
+  color: var(--av-text);
+  letter-spacing: -0.5px;
+}
+
+.section-header p {
+  color: var(--av-muted);
+  line-height: 1.7;
+}
+
+.card-grid {
+  gap: 24px;
+}
+
+.card {
+  background: var(--av-surface);
+  border: 1px solid var(--av-border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  background: var(--av-surface-hover);
+  border-color: var(--av-purple);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+.card img {
+  max-width: 100%;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-body h3 {
+  color: var(--av-text);
+  line-height: 1.4;
+}
+
+.card-body p {
+  color: var(--av-muted);
+  line-height: 1.7;
+}
+
+.card-meta {
+  color: var(--av-purple);
+  font-size: 0.88rem;
+}
+
+.card-link {
+  color: var(--av-purple);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.card-link:hover {
+  color: var(--av-blue);
+}
+
+img {
+  height: auto;
+}
+
+@media (max-width: 600px) {
+  .content-section {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+
+  .card-grid {
+    gap: 18px;
+  }
+
+  .card-body {
+    padding: 16px;
+  }
+}
+
+/* ===== END ANIMEVERSE VISUAL UPGRADE ===== */
