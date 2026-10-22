@@ -144,3 +144,23 @@ cards.forEach(function (card) {
     }
   });
 });
+
+/* AnimeVerse Upload Menu */
+function openUploadMenu() {
+  document.getElementById("upload-menu").hidden = false;
+}
+
+function closeUploadMenu() {
+  document.getElementById("upload-menu").hidden = true;
+}
+
+function chooseUploadType(type) {
+  const names = {
+    blog: "Anime Blog",
+    art: "Fan Art & Designs",
+    edit: "Anime Edits"
+  };
+
+  alert(names[type] + " submissions are coming soon!");
+  closeUploadMenu();
+}
