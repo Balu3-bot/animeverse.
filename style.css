@@ -922,3 +922,8 @@ body {
     transform: none;
   }
 }
+#blogs .card > img {
+  object-fit: contain !important;
+  object-position: center top !important;
+  background: #100b1c;
+}
