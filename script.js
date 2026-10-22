@@ -70,6 +70,8 @@ if (yearSpan) {
 }
 
 /* AnimeVerse homepage search */
+
+/* AnimeVerse homepage search */
 document.addEventListener("DOMContentLoaded", function () {
   const searchInput = document.querySelector("#animeverse-search");
   const searchButton = document.querySelector("#animeverse-search-btn");
@@ -90,6 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     let matches = 0;
+    let firstMatch = null;
 
     cards.forEach(function (card) {
       const text = card.textContent.toLowerCase();
@@ -97,26 +100,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
       card.hidden = !found;
 
-      if (found) matches++; 
-
-             if (found) {
+      if (found) {
         matches++;
-
-        if (matches === 1) {
-          setTimeout(function () {
-            card.scrollIntoView({
-              behavior: "smooth",
-              block: "center"
-            });
-          }, 100);
+        if (!firstMatch) {
+          firstMatch = card;
         }
       }
     });
 
     searchMessage.textContent = matches
-    searchMessage.textContent = matches
       ? matches + " result(s) found."
       : "No matching content found.";
+
+    if (firstMatch) {
+      setTimeout(function () {
+        firstMatch.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+      }, 150);
+    }
   }
 
   searchButton.addEventListener("click", runAnimeVerseSearch);
