@@ -98,8 +98,8 @@ document.addEventListener("DOMContentLoaded", function () {
       card.hidden = !found;
 
       if (found) matches++; 
-       
-if (matches === 1) {
+
+       if (matches === 1) {
   setTimeout(function () {
     card.scrollIntoView({
       behavior: "smooth",
