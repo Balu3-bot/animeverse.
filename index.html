@@ -332,5 +332,30 @@
   <!-- Link to your JavaScript file.
        It goes at the bottom so the page loads first, then the script runs. -->
   <script src="script.js"></script>
+  
+  <!-- AnimeVerse Upload Menu -->
+<div id="upload-menu" class="upload-menu" hidden>
+  <div class="upload-menu-content">
+    <h2>Upload Your Creation</h2>
+    <p>What would you like to contribute?</p>
+
+    <button type="button" onclick="chooseUploadType('blog')">
+      📝 Anime Blog
+    </button>
+
+    <button type="button" onclick="chooseUploadType('art')">
+      🎨 Fan Art &amp; Designs
+    </button>
+
+    <button type="button" onclick="chooseUploadType('edit')">
+      🎬 Anime Edits
+    </button>
+
+    <button type="button" onclick="closeUploadMenu()">
+      Cancel
+    </button>
+  </div>
+</div>
+<!-- End AnimeVerse Upload Menu -->
 </body>
 </html>
