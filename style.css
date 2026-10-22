@@ -1001,3 +1001,62 @@ body {
   }
 }
 /* End desktop navigation spacing */
+
+/* AnimeVerse — Shadow Monarch Upload Button */
+.upload-entry {
+  display: flex;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
+.upload-btn {
+  position: relative;
+  overflow: hidden;
+  padding: 15px 28px;
+  border: 1px solid #a855f7;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #190b2e, #351064, #10172e);
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  box-shadow:
+    0 0 10px rgba(168, 85, 247, 0.55),
+    0 0 28px rgba(124, 58, 237, 0.25),
+    inset 0 0 12px rgba(168, 85, 247, 0.15);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.upload-btn:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 0 16px rgba(192, 132, 252, 0.8),
+    0 0 36px rgba(124, 58, 237, 0.5);
+}
+
+.upload-btn:active {
+  transform: scale(0.96);
+}
+
+.upload-btn:focus-visible {
+  outline: 3px solid #c084fc;
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .upload-btn {
+    animation: monarchPulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes monarchPulse {
+    0%, 100% {
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.4),
+                  0 0 20px rgba(124, 58, 237, 0.2);
+    }
+    50% {
+      box-shadow: 0 0 16px rgba(192, 132, 252, 0.75),
+                  0 0 32px rgba(124, 58, 237, 0.4);
+    }
+  }
+}
