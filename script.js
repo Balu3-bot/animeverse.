@@ -97,7 +97,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
       card.hidden = !found;
 
-      if (found) matches++;
+      if (found) matches++; 
+       
+       if (matches === 1) {
+    card.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+  }
+}
     });
 
     searchMessage.textContent = matches
