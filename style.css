@@ -933,3 +933,59 @@ body {
   object-fit: cover !important;
   object-position: center 100% !important;
 }
+
+/* AnimeVerse Search Bar */
+.animeverse-search-section {
+  padding: 30px 16px;
+  text-align: center;
+}
+
+.animeverse-search-section .search-container {
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 24px;
+  border-radius: 16px;
+  background: rgba(120, 70, 200, 0.12);
+  border: 1px solid rgba(160, 110, 255, 0.35);
+}
+
+.animeverse-search-section h2 {
+  margin: 0 0 8px;
+}
+
+.animeverse-search-section .search-controls {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.animeverse-search-section input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #8b6bc1;
+  font-size: 16px;
+}
+
+.animeverse-search-section button {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.animeverse-search-section #animeverse-search-message {
+  margin-bottom: 0;
+}
+
+@media (max-width: 480px) {
+  .animeverse-search-section .search-controls {
+    flex-direction: column;
+  }
+
+  .animeverse-search-section button {
+    width: 100%;
+  }
+}
+/* End AnimeVerse Search Bar */
