@@ -68,3 +68,61 @@ if (menuToggle && navLinks) {
 if (yearSpan) {
   yearSpan.textContent = new Date().getFullYear();
 }
+
+/* AnimeVerse homepage search */
+document.addEventListener("DOMContentLoaded", function () {
+  const searchInput = document.querySelector("#animeverse-search");
+  const searchButton = document.querySelector("#animeverse-search-btn");
+  const searchMessage = document.querySelector("#animeverse-search-message");
+
+  if (!searchInput || !searchButton || !searchMessage) return;
+
+  function runAnimeVerseSearch() {
+    const query = searchInput.value.trim().toLowerCase();
+
+    const cards = document.querySelectorAll(
+      "#blogs .card, #blogs .content-card, #content .card, #content .content-card"
+    );
+
+    if (!query) {
+      searchMessage.textContent = "Type something to search for.";
+      return;
+    }
+
+    let matches = 0;
+
+    cards.forEach(function (card) {
+      const text = card.textContent.toLowerCase();
+      const found = text.includes(query);
+
+      card.hidden = !found;
+
+      if (found) matches++;
+    });
+
+    searchMessage.textContent = matches
+      ? matches + " result(s) found."
+      : "No matching content found.";
+  }
+
+  searchButton.addEventListener("click", runAnimeVerseSearch);
+
+  searchInput.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      runAnimeVerseSearch();
+    }
+  });
+
+  searchInput.addEventListener("input", function () {
+    if (!searchInput.value.trim()) {
+      document.querySelectorAll(
+        "#blogs .card, #blogs .content-card, #content .card, #content .content-card"
+      ).forEach(function (card) {
+        card.hidden = false;
+      });
+
+      searchMessage.textContent = "";
+    }
+  });
+});
