@@ -827,3 +827,20 @@ body {
   object-position: center top;
   border-radius: 20px;
 }
+/* ===== MOBILE HERO IMAGE FIX ===== */
+@media (max-width: 600px) {
+  .hero-image {
+    width: 100%;
+    max-width: 100%;
+    margin: 20px auto;
+  }
+
+  .hero-image img {
+    width: 100%;
+    height: auto;
+    max-height: 520px;
+    object-fit: contain;
+    object-position: center;
+    border-radius: 16px;
+  }
+}
