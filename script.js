@@ -83,8 +83,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const query = searchInput.value.trim().toLowerCase();
 
     const cards = document.querySelectorAll(
-      "#blogs .card, #blogs .content-card, #content .card, #content .content-card"
-    );
+  "#blogs .card, #blogs .content-card, " +
+  "#content .card, #content .content-card, " +
+  "#art .card, #edits .card"
+);
 
     if (!query) {
       searchMessage.textContent = "Type something to search for.";
@@ -133,12 +135,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   searchInput.addEventListener("input", function () {
     if (!searchInput.value.trim()) {
-      document.querySelectorAll(
-        "#blogs .card, #blogs .content-card, #content .card, #content .content-card"
-      ).forEach(function (card) {
-        card.hidden = false;
-      });
-
+      
+cards.forEach(function (card) {
+  card.hidden = false;
+});
+       
       searchMessage.textContent = "";
     }
   });
