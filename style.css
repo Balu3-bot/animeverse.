@@ -927,3 +927,8 @@ body {
   object-position: center 20% !important;
   background: #100b1c;
 }
+#blogs .card:nth-child(2) > img {
+  object-fit: contain !important;
+  object-position: center center !important;
+  background: #100b1c;
+}
