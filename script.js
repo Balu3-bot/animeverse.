@@ -99,14 +99,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (found) matches++; 
        
-       if (matches === 1) {
+if (matches === 1) {
+  setTimeout(function () {
     card.scrollIntoView({
       behavior: "smooth",
       block: "center"
     });
-  }
+  }, 100);
 }
-    });
 
     searchMessage.textContent = matches
       ? matches + " result(s) found."
