@@ -70,7 +70,6 @@ if (yearSpan) {
 }
 
 /* AnimeVerse homepage search */
-
 /* AnimeVerse homepage search */
 document.addEventListener("DOMContentLoaded", function () {
   const searchInput = document.querySelector("#animeverse-search");
@@ -142,4 +141,4 @@ document.addEventListener("DOMContentLoaded", function () {
       searchMessage.textContent = "";
     }
   });
-});
+};
