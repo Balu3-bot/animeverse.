@@ -928,7 +928,7 @@ body {
   background: #100b1c;
 }
 #blogs .card:nth-child(2) > img {
-  object-fit: contain !important;
+  object-fit: cover !important;
   object-position: center center !important;
   background: #100b1c;
 }
