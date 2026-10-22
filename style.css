@@ -923,7 +923,7 @@ body {
   }
 }
 #blogs .card > img {
-  object-fit: contain !important;
-  object-position: center top !important;
+  object-fit: cover !important;
+  object-position: center 20% !important;
   background: #100b1c;
 }
