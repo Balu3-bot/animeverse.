@@ -1,60 +1,50 @@
+
 /* ==========================================================
    ANIMEVERSE - script.js
-   What this file does:
-   1. Opens and closes the mobile menu
-   2. Closes the menu when a link is clicked or Escape is pressed
-   3. Fills in the current year in the footer
+   1. Mobile navigation
+   2. Automatic footer year
+   3. AnimeVerse search
+   4. Upload menu
    ========================================================== */
 
 
-/* ---------- 1. FIND THE ELEMENTS WE NEED ----------
-   document.getElementById() finds an element by its id in index.html. */
-const menuToggle = document.getElementById("menuToggle"); // the "Menu" button
-const navLinks = document.getElementById("navLinks");     // the list of links
-const yearSpan = document.getElementById("year");         // the year in the footer
+/* ---------- 1. MOBILE NAVIGATION ---------- */
 
+const menuToggle = document.getElementById("menuToggle");
+const navLinks = document.getElementById("navLinks");
+const yearSpan = document.getElementById("year");
 
-/* ---------- 2. MOBILE MENU ---------- */
-
-// Function: open or close the menu
 function toggleMenu() {
-  // classList.toggle() adds the class "open" if it's missing, removes it if it's there.
-  // It returns true when the menu is now open. style.css shows the menu when "open" is on.
+  if (!menuToggle || !navLinks) return;
+
   const isOpen = navLinks.classList.toggle("open");
 
-  // Tell screen readers whether the menu is open (accessibility)
-  menuToggle.setAttribute("aria-expanded", isOpen);
-
-  // Change the button text to match
+  menuToggle.setAttribute("aria-expanded", String(isOpen));
   menuToggle.textContent = isOpen ? "Close" : "Menu";
 }
 
-// Function: close the menu
 function closeMenu() {
+  if (!menuToggle || !navLinks) return;
+
   navLinks.classList.remove("open");
   menuToggle.setAttribute("aria-expanded", "false");
   menuToggle.textContent = "Menu";
 }
 
-// Only add the menu code if both elements exist on the page
 if (menuToggle && navLinks) {
-
-  // When the Menu button is clicked, open or close the menu
   menuToggle.addEventListener("click", toggleMenu);
 
-  // When any link inside the menu is clicked, close the menu
   navLinks.querySelectorAll("a").forEach(function (link) {
     link.addEventListener("click", closeMenu);
   });
 
-  // When the Escape key is pressed, close the menu
   document.addEventListener("keydown", function (event) {
     if (event.key === "Escape") {
       closeMenu();
+      closeUploadMenu();
     }
   });
 
-  // If the window grows to desktop size, reset the menu
   window.addEventListener("resize", function () {
     if (window.innerWidth > 700) {
       closeMenu();
@@ -63,32 +53,39 @@ if (menuToggle && navLinks) {
 }
 
 
-/* ---------- 3. FOOTER YEAR ----------
-   Sets the year automatically so you never have to update it by hand. */
+/* ---------- 2. FOOTER YEAR ---------- */
+
 if (yearSpan) {
   yearSpan.textContent = new Date().getFullYear();
 }
 
-/* AnimeVerse homepage search */
 
-/* AnimeVerse homepage search */
-document.addEventListener("DOMContentLoaded", function () {
-  const searchInput = document.querySelector("#animeverse-search");
-  const searchButton = document.querySelector("#animeverse-search-btn");
-  const searchMessage = document.querySelector("#animeverse-search-message");
+/* ---------- 3. ANIMEVERSE SEARCH ---------- */
+
+function setupAnimeVerseSearch() {
+  const searchInput = document.getElementById("animeverse-search");
+  const searchButton = document.getElementById("animeverse-search-btn");
+  const searchMessage = document.getElementById(
+    "animeverse-search-message"
+  );
 
   if (!searchInput || !searchButton || !searchMessage) return;
+
+  // Shared by both search and clear-search handlers.
+  const cards = document.querySelectorAll(
+    "#blogs .card, #blogs .content-card, " +
+    "#content .card, #content .content-card, " +
+    "#art .card, #edits .card"
+  );
 
   function runAnimeVerseSearch() {
     const query = searchInput.value.trim().toLowerCase();
 
-    const cards = document.querySelectorAll(
-  "#blogs .card, #blogs .content-card, " +
-  "#content .card, #content .content-card, " +
-  "#art .card, #edits .card"
-);
-
     if (!query) {
+      cards.forEach(function (card) {
+        card.hidden = false;
+      });
+
       searchMessage.textContent = "Type something to search for.";
       return;
     }
@@ -97,13 +94,13 @@ document.addEventListener("DOMContentLoaded", function () {
     let firstMatch = null;
 
     cards.forEach(function (card) {
-      const text = card.textContent.toLowerCase();
-      const found = text.includes(query);
+      const found = card.textContent.toLowerCase().includes(query);
 
       card.hidden = !found;
 
       if (found) {
         matches++;
+
         if (!firstMatch) {
           firstMatch = card;
         }
@@ -135,23 +132,46 @@ document.addEventListener("DOMContentLoaded", function () {
 
   searchInput.addEventListener("input", function () {
     if (!searchInput.value.trim()) {
-      
-cards.forEach(function (card) {
-  card.hidden = false;
-});
-       
+      cards.forEach(function (card) {
+        card.hidden = false;
+      });
+
       searchMessage.textContent = "";
     }
   });
-});
+}
 
-/* AnimeVerse Upload Menu */
+
+/* ---------- 4. ANIMEVERSE UPLOAD MENU ---------- */
+
 function openUploadMenu() {
-  document.getElementById("upload-menu").hidden = false;
+  const uploadMenu = document.getElementById("upload-menu");
+
+  if (!uploadMenu) {
+    console.error(
+      'AnimeVerse: Could not find the element with id="upload-menu".'
+    );
+    alert("The upload menu could not be found. Please refresh the page.");
+    return;
+  }
+
+  uploadMenu.hidden = false;
+  uploadMenu.style.display = "flex";
+
+  const firstButton = uploadMenu.querySelector("button");
+
+  if (firstButton) {
+    firstButton.focus();
+  }
 }
 
 function closeUploadMenu() {
-  document.getElementById("upload-menu").hidden = true;
+  const uploadMenu = document.getElementById("upload-menu");
+
+  if (!uploadMenu) return;
+
+  uploadMenu.hidden = true;
+  uploadMenu.style.display = "none";
 }
 
 function chooseUploadType(type) {
@@ -161,6 +181,36 @@ function chooseUploadType(type) {
     edit: "Anime Edits"
   };
 
-  alert(names[type] + " submissions are coming soon!");
+  if (!Object.prototype.hasOwnProperty.call(names, type)) {
+    return;
+  }
+
   closeUploadMenu();
+
+  alert(names[type] + " submissions are coming soon!");
+}
+
+
+/* ---------- 5. INITIALIZE ---------- */
+
+function initializeAnimeVerse() {
+  setupAnimeVerseSearch();
+
+  // Keep the menu hidden until the visitor taps Upload.
+  const uploadMenu = document.getElementById("upload-menu");
+
+  if (uploadMenu) {
+    uploadMenu.hidden = true;
+    uploadMenu.style.display = "none";
+  }
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener(
+    "DOMContentLoaded",
+    initializeAnimeVerse,
+    { once: true }
+  );
+} else {
+  initializeAnimeVerse();
 }
