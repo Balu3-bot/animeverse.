@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#151122">
+  <title>Artwork | AnimeVerse</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .artwork-detail {
+      width: min(900px, 92%);
+      margin: 40px auto;
+    }
+    .artwork-detail-image {
+      display: block;
+      width: 100%;
+      max-height: 75vh;
+      object-fit: contain;
+      background: #100d18;
+      border-radius: 16px;
+    }
+    .artwork-detail .artwork-actions {
+      margin-top: 14px;
+    }
+    .artwork-back {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: inherit;
+    }
+    .artwork-detail h1 {
+      margin: 18px 0 8px;
+    }
+  </style>
+</head>
+<body>
+  <main class="artwork-detail">
+    <a class="artwork-back" href="index.html#art">
+      ← Back to Fan Art
+    </a>
+
+    <article class="card fan-art-card" id="artwork-card">
+      <img
+        class="artwork-detail-image"
+        id="artwork-image"
+        src="fanart-swordsman.jpg"
+        alt="Anime artwork">
+
+      <div class="card-body">
+        <span class="fan-art-tag">ANIMEVERSE GALLERY</span>
+        <h1 id="artwork-title">Midnight Swordsman</h1>
+        <p id="artwork-description">
+          Explore this anime-inspired creation.
+        </p>
+
+        <div class="artwork-actions">
+          <button type="button" onclick="togglePin(this)">📌 Pin</button>
+          <button type="button" onclick="toggleSave(this)">❤️ Save</button>
+          <button type="button" onclick="downloadArtwork(this)">⬇️ Download</button>
+          <button type="button" onclick="shareArtwork(this)">🔗 Share</button>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    const artworks = {
+      swordsman: {
+        title: "Midnight Swordsman",
+        image: "fanart-swordsman.jpg",
+        description: "A featured character artwork from AnimeVerse."
+      },
+      monarch: {
+        title: "Shadow Monarch",
+        image: "fanart-shadow-monarch.jpg",
+        description: "A dark fantasy creation from the AnimeVerse gallery."
+      },
+      spirit: {
+        title: "Spirit Realm",
+        image: "fanart-spirit-god.jpg",
+        description: "A fantasy world waiting to be explored."
+      }
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const artwork = artworks[params.get("art")] || artworks.swordsman;
+
+    document.title = artwork.title + " | AnimeVerse";
+    document.getElementById("artwork-title").textContent = artwork.title;
+    document.getElementById("artwork-description").textContent =
+      artwork.description;
+    document.getElementById("artwork-image").src = artwork.image;
+    document.getElementById("artwork-image").alt = artwork.title;
+  </script>
+</body>
+</html>
