@@ -1367,3 +1367,48 @@ body {
   font-weight: 700;
   letter-spacing: 1px;
 }
+
+/* ===== AnimeVerse: Horizontal Blog Carousel ===== */
+
+/* Hidden until the Blogs section is opened */
+#blogs.blog-carousel-open .card-grid {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 18px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 12px 4px 24px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+}
+
+#blogs.blog-carousel-open .card {
+  flex: 0 0 85%;
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+/* Wider cards on tablets and computers */
+@media (min-width: 700px) {
+  #blogs.blog-carousel-open .card {
+    flex-basis: 320px;
+  }
+}
+
+/* Visible scrollbar */
+#blogs.blog-carousel-open .card-grid::-webkit-scrollbar {
+  height: 7px;
+}
+
+#blogs.blog-carousel-open .card-grid::-webkit-scrollbar-thumb {
+  background: #a78bfa;
+  border-radius: 20px;
+}
+
+#blogs.blog-carousel-open .card-grid::-webkit-scrollbar-track {
+  background: #201f3b;
+  border-radius: 20px;
+}
+
+/* ===== End Horizontal Blog Carousel ===== */
