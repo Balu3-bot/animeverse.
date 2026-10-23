@@ -214,3 +214,131 @@ if (document.readyState === "loading") {
 } else {
   initializeAnimeVerse();
 }
+
+/* ===== AnimeVerse Fan Art Features ===== */
+
+function getArtworkCard(button) {
+  return button.closest(".fan-art-card");
+}
+
+function getArtworkTitle(card) {
+  return card.querySelector("h3")?.textContent.trim() || "Anime artwork";
+}
+
+function getArtworkImage(card) {
+  return card.querySelector(".fan-art-image-link");
+}
+
+// Pin artwork
+function togglePin(button) {
+  const card = getArtworkCard(button);
+  if (!card) return;
+
+  const pinned = card.classList.toggle("artwork-pinned");
+  button.textContent = pinned ? "📌 Pinned" : "📌 Pin";
+  button.setAttribute("aria-pressed", String(pinned));
+
+  const title = getArtworkTitle(card);
+  let pins = JSON.parse(localStorage.getItem("animeverse-pins") || "[]");
+
+  pins = pins.filter(item => item !== title);
+  if (pinned) pins.push(title);
+
+  localStorage.setItem("animeverse-pins", JSON.stringify(pins));
+}
+
+// Save artwork
+function toggleSave(button) {
+  const card = getArtworkCard(button);
+  if (!card) return;
+
+  const title = getArtworkTitle(card);
+  let saved = JSON.parse(localStorage.getItem("animeverse-saved") || "[]");
+
+  const alreadySaved = saved.includes(title);
+
+  if (alreadySaved) {
+    saved = saved.filter(item => item !== title);
+  } else {
+    saved.push(title);
+  }
+
+  localStorage.setItem("animeverse-saved", JSON.stringify(saved));
+
+  button.textContent = alreadySaved ? "❤️ Save" : "💖 Saved";
+  button.setAttribute("aria-pressed", String(!alreadySaved));
+}
+
+// Download artwork
+function downloadArtwork(button) {
+  const card = getArtworkCard(button);
+  const link = card && getArtworkImage(card);
+
+  if (!link) {
+    alert("Artwork image not found.");
+    return;
+  }
+
+  const imageUrl = link.href;
+  const filename = imageUrl.split("/").pop().split("?")[0];
+
+  const downloadLink = document.createElement("a");
+  downloadLink.href = imageUrl;
+  downloadLink.download = filename || "animeverse-artwork.jpg";
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  downloadLink.remove();
+}
+
+// Share artwork
+async function shareArtwork(button) {
+  const card = getArtworkCard(button);
+  const link = card && getArtworkImage(card);
+  if (!card || !link) return;
+
+  const shareData = {
+    title: getArtworkTitle(card),
+    text: "Check out this artwork on AnimeVerse!",
+    url: link.href
+  };
+
+  try {
+    if (navigator.share) {
+      await navigator.share(shareData);
+    } else if (navigator.clipboard) {
+      await navigator.clipboard.writeText(shareData.url);
+      alert("Artwork link copied!");
+    } else {
+      prompt("Copy this artwork link:", shareData.url);
+    }
+  } catch (error) {
+    if (error.name !== "AbortError") {
+      alert("Couldn't share this artwork. Please try again.");
+    }
+  }
+}
+
+// Restore saved and pinned button states
+document.addEventListener("DOMContentLoaded", function () {
+  const pins = JSON.parse(localStorage.getItem("animeverse-pins") || "[]");
+  const saved = JSON.parse(localStorage.getItem("animeverse-saved") || "[]");
+
+  document.querySelectorAll(".fan-art-card").forEach(card => {
+    const title = getArtworkTitle(card);
+    const pinButton = card.querySelector('button[onclick="togglePin(this)"]');
+    const saveButton = card.querySelector('button[onclick="toggleSave(this)"]');
+
+    if (pins.includes(title)) {
+      card.classList.add("artwork-pinned");
+      if (pinButton) {
+        pinButton.textContent = "📌 Pinned";
+        pinButton.setAttribute("aria-pressed", "true");
+      }
+    }
+
+    if (saved.includes(title) && saveButton) {
+      saveButton.textContent = "💖 Saved";
+      saveButton.setAttribute("aria-pressed", "true");
+    }
+  });
+});
