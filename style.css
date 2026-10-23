@@ -1319,3 +1319,51 @@ body {
     transform: none;
   }
 }
+
+/* ===== AnimeVerse Fan Art Actions ===== */
+
+.artwork-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 0;
+}
+
+.artwork-actions button {
+  flex: 1 1 auto;
+  min-width: 90px;
+  padding: 10px 12px;
+  border: 1px solid rgba(150, 130, 255, 0.35);
+  border-radius: 12px;
+  background: rgba(100, 75, 180, 0.12);
+  color: inherit;
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.artwork-actions button:hover {
+  background: rgba(130, 100, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+.artwork-actions button:focus-visible {
+  outline: 2px solid #9b87ff;
+  outline-offset: 3px;
+}
+
+.fan-art-card.artwork-pinned {
+  border: 2px solid #9b87ff;
+  box-shadow: 0 0 18px rgba(130, 100, 255, 0.22);
+}
+
+.fan-art-card.artwork-pinned::before {
+  content: "📌 PINNED";
+  display: block;
+  padding: 8px 12px;
+  color: #c7b8ff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
