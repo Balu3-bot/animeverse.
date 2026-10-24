@@ -342,3 +342,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+/* ===== AnimeVerse: Activate Blog Carousel ===== */
+
+document.querySelectorAll('a[href="#blogs"]').forEach(function (link) {
+  link.addEventListener("click", function () {
+    const blogsSection = document.getElementById("blogs");
+
+    if (blogsSection) {
+      blogsSection.classList.add("blog-carousel-open");
+    }
+  });
+});
