@@ -1495,3 +1495,73 @@ body {
 
 /* ===== End Compact Horizontal Card Rows ===== */
 
+/* ===== Restore Original Desktop Card Layout ===== */
+
+@media (min-width: 701px) {
+  .content-section .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    overflow: visible;
+    padding: 0;
+    scroll-snap-type: none;
+  }
+
+  .content-section .card-grid > .card {
+    flex: initial;
+    min-width: 0;
+    scroll-snap-align: none;
+  }
+
+  .content-section .card > img,
+  .content-section .card .thumbnail img {
+    height: auto;
+  }
+
+  #blogs .card > img {
+    height: 220px;
+  }
+
+  #blogs .card:nth-child(2) > img {
+    height: 240px;
+  }
+
+  .content-section .card-body {
+    padding: 20px;
+  }
+
+  .content-section .card-body h3 {
+    font-size: 1.15rem;
+    line-height: 1.4;
+  }
+
+  .content-section .card-body p {
+    font-size: 0.97rem;
+    line-height: 1.7;
+  }
+
+  .fan-art-section .fan-art-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    overflow: visible;
+    padding: 0;
+    scroll-snap-type: none;
+  }
+
+  .fan-art-section .fan-art-grid > .fan-art-card {
+    flex: initial;
+    min-width: 0;
+    scroll-snap-align: none;
+  }
+
+  .fan-art-section .fan-art-card .fan-art-image-link {
+    aspect-ratio: 1 / 1;
+  }
+
+  .fan-art-card .card-body {
+    padding: 18px;
+  }
+}
+
+/* ===== End Desktop Restoration ===== */
