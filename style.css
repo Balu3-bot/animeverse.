@@ -1565,3 +1565,23 @@ body {
 }
 
 /* ===== End Desktop Restoration ===== */
+
+/* ===== Minimal Anime Blog Cards ===== */
+
+#blogs .card-body {
+  padding: 12px 14px;
+}
+
+#blogs .card-body p,
+#blogs .card-body .card-meta,
+#blogs .card-body .card-link {
+  display: none;
+}
+
+#blogs .card-body h3 {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.4;
+}
+
+/* ===== End Minimal Anime Blog Cards ===== */
