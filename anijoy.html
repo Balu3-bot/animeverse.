@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Discover anime, explore genres, and find official streaming options on AniJoy by AnimeVerse.">
+  <title>AniJoy | AnimeVerse</title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .anijoy-page {
+      max-width: 1200px;
+      margin: auto;
+      padding: 24px 16px 60px;
+    }
+
+    .anijoy-hero {
+      text-align: center;
+      padding: 42px 18px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #21134a, #462078, #143b63);
+      color: white;
+      margin-bottom: 28px;
+    }
+
+    .anijoy-hero h1 {
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      margin: 0 0 12px;
+    }
+
+    .anijoy-hero p {
+      max-width: 620px;
+      margin: 0 auto 22px;
+      line-height: 1.7;
+    }
+
+    .anijoy-search {
+      display: flex;
+      gap: 10px;
+      max-width: 650px;
+      margin: auto;
+    }
+
+    .anijoy-search input {
+      flex: 1;
+      min-width: 0;
+      padding: 14px;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    .anijoy-search button,
+    .anijoy-filters button {
+      padding: 12px 18px;
+      border: 0;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .anijoy-search button {
+      background: #ffcc55;
+      color: #24133c;
+    }
+
+    .anijoy-filters {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 8px 0 18px;
+      margin-bottom: 16px;
+    }
+
+    .anijoy-filters button {
+      flex: 0 0 auto;
+      background: #eee8ff;
+      color: #35205c;
+    }
+
+    .anijoy-filters button.active {
+      background: #5631a3;
+      color: white;
+    }
+
+    .anijoy-heading {
+      margin: 28px 0 16px;
+    }
+
+    .anijoy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 20px;
+    }
+
+    .anijoy-card {
+      overflow: hidden;
+      border-radius: 15px;
+      background: var(--card-bg, #fff);
+      color: var(--text-color, #222);
+      box-shadow: 0 5px 18px #00000014;
+      border: 1px solid #8882;
+    }
+
+    .anijoy-card img {
+      display: block;
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      background: #ddd;
+    }
+
+    .anijoy-card-body {
+      padding: 16px;
+    }
+
+    .anijoy-card h3 {
+      margin: 0 0 8px;
+    }
+
+    .anijoy-meta {
+      font-size: 13px;
+      opacity: .8;
+      margin-bottom: 10px;
+    }
+
+    .anijoy-card p {
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .anijoy-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 12px 0;
+    }
+
+    .anijoy-tags span {
+      font-size: 12px;
+      padding: 5px 8px;
+      border-radius: 20px;
+      background: #eee8ff;
+      color: #35205c;
+    }
+
+    .anijoy-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .anijoy-links a {
+      display: inline-block;
+      padding: 9px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      background: #5631a3;
+      color: white;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .anijoy-links a.secondary {
+      background: #e8e3f2;
+      color: #35205c;
+    }
+
+    .anijoy-empty {
+      padding: 28px 12px;
+      text-align: center;
+      display: none;
+    }
+
+    .anijoy-back {
+      display: inline-block;
+      margin-bottom: 20px;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .anijoy-note {
+      margin-top: 28px;
+      font-size: 13px;
+      line-height: 1.7;
+      opacity: .8;
+    }
+
+    @media (max-width: 520px) {
+      .anijoy-search {
+        flex-direction: column;
+      }
+
+      .anijoy-search button {
+        width: 100%;
+      }
+
+      .anijoy-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .anijoy-card img {
+        height: 190px;
+      }
+
+      .anijoy-card-body {
+        padding: 11px;
+      }
+
+      .anijoy-card h3 {
+        font-size: 16px;
+      }
+
+      .anijoy-card p {
+        font-size: 13px;
+      }
+
+      .anijoy-links a {
+        padding: 8px;
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="anijoy-page">
+    <a class="anijoy-back" href="index.html">← Back to AnimeVerse</a>
+
+    <section class="anijoy-hero">
+      <h1>🎌 AniJoy</h1>
+      <p>Discover new worlds, unforgettable characters, and your next favourite anime—all in one place.</p>
+
+      <form class="anijoy-search" id="anijoySearchForm">
+        <input
+          type="search"
+          id="anijoySearch"
+          placeholder="Search anime or genre..."
+          aria-label="Search anime or genre"
+        >
+        <button type="submit">Search 🔎</button>
+      </form>
+    </section>
+
+    <section aria-label="Anime genres">
+      <h2 class="anijoy-heading">Explore by Genre</h2>
+      <div class="anijoy-filters" id="anijoyFilters">
+        <button type="button" class="active" data-genre="all">All Anime</button>
+        <button type="button" data-genre="action">⚔️ Action</button>
+        <button type="button" data-genre="fantasy">✨ Fantasy</button>
+        <button type="button" data-genre="adventure">🌍 Adventure</button>
+        <button type="button" data-genre="sports">🏆 Sports</button>
+        <button type="button" data-genre="drama">💙 Drama</button>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="anijoy-heading">🌟 Discover Anime</h2>
+      <div class="anijoy-grid" id="anijoyGrid">
+
+        <article class="anijoy-card" data-title="solo leveling" data-genre="action fantasy adventure">
+          <img src="https://cdn.myanimelist.net/images/anime/1801/142390l.jpg"
+               alt="Solo Leveling anime poster" loading="lazy">
+          <div class="anijoy-card-body">
+            <h3>Solo Leveling</h3>
+            <div class="anijoy-meta">⭐ Rating varies by platform · Action / Fantasy</div>
+            <p>Sung Jinwoo begins as a low-ranked hunter and discovers a mysterious power that changes his life.</p>
+            <div class="anijoy-tags"><span>Action</span><span>Fantasy</span></div>
+            <div class="anijoy-links">
+              <a href="https://www.crunchyroll.com/" target="_blank" rel="noopener noreferrer">Official streaming</a>
+              <a class="secondary" href="https://myanimelist.net/anime/52299" target="_blank" rel="noopener noreferrer">Details</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="anijoy-card" data-title="naruto" data-genre="action adventure drama">
+          <img src="https://cdn.myanimelist.net/images/anime/13/17405l.jpg"
+               alt="Naruto anime poster" loading="lazy">
+          <div class="anijoy-card-body">
+            <h3>Naruto</h3>
+            <div class="anijoy-meta">⭐ Rating varies by platform · Action / Adventure</div>
+            <p>A young ninja works toward his dream of becoming the leader of his village.</p>
+            <div class="anijoy-tags"><span>Action</span><span>Adventure</span></div>
+            <div class="anijoy-links">
+              <a href="https://www.crunchyroll.com/" target="_blank" rel="noopener noreferrer">Official streaming</a>
+              <a class="secondary" href="https://myanimelist.net/anime/20" target="_blank" rel="noopener noreferrer">Details</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="anijoy-card" data-title="attack on titan" data-genre="action drama fantasy">
+          <img src="https://cdn.myanimelist.net/images/anime/10/47347l.jpg"
+               alt="Attack on Titan anime poster" loading="lazy">
+          <div class="anijoy-card-body">
+            <h3>Attack on Titan</h3>
+            <div class="anijoy-meta">⭐ Rating varies by platform · Action / Drama</div>
+            <p>Humanity fights for survival behind enormous walls in a world threatened by Titans.</p>
+            <div class="anijoy-tags"><span>Action</span><span>Drama</span></div>
+            <div class="anijoy-links">
+              <a href="https://www.crunchyroll.com/" target="_blank" rel="noopener noreferrer">Official streaming</a>
+              <a class="secondary" href="https://myanimelist.net/anime/16498" target="_blank" rel="noopener noreferrer">Details</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="anijoy-card" data-title="demon slayer kimetsu no yaiba" data-genre="action fantasy adventure">
+          <img src="https://cdn.myanimelist.net/images/anime/1286/99889l.jpg"
+               alt="Demon Slayer anime poster" loading="lazy">
+          <div class="anijoy-card-body">
+            <h3>Demon Slayer</h3>
+            <div class="anijoy-meta">⭐ Rating varies by platform · Action / Fantasy</div>
+            <p>Tanjiro joins the fight against demons while searching for a way to help his sister.</p>
+            <div class="anijoy-tags"><span>Action</span><span>Fantasy</span></div>
+            <div class="anijoy-links">
+              <a href="https://www.crunchyroll.com/" target="_blank" rel="noopener noreferrer">Official streaming</a>
+              <a class="secondary" href="https://myanimelist.net/anime/38000" target="_blank" rel="noopener noreferrer">Details</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="anijoy-card" data-title="haikyu haikyuu" data-genre="sports drama">
+          <img src="https://cdn.myanimelist.net/images/anime/7/76014l.jpg"
+               alt="Haikyu anime poster" loading="lazy">
+          <div class="anijoy-card-body">
+            <h3>Haikyu!!</h3>
+            <div class="anijoy-meta">⭐ Rating varies by platform · Sports / Drama</div>
+            <p>A determined volleyball player joins his school team and learns to work with his teammates.</p>
+            <div class="anijoy-tags"><span>Sports</span><span>Drama</span></div>
+            <div class="anijoy-links">
+              <a href="https://www.crunchyroll.com/" target="_blank" rel="noopener noreferrer">Official streaming</a>
+              <a class="secondary" href="https://myanimelist.net/anime/20583" target="_blank" rel="noopener noreferrer">Details</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="anijoy-card" data-title="one piece" data-genre="action adventure fantasy">
+          <img src="https://cdn.myanimelist.net/images/anime/6/73245l.jpg"
+               alt="One Piece anime poster" loading="lazy">
+          <div class="anijoy-card-body">
+            <h3>One Piece</h3>
+            <div class="anijoy-meta">⭐ Rating varies by platform · Adventure / Fantasy</div>
+            <p>Luffy and his crew travel across the seas in search of the legendary One Piece treasure.</p>
+            <div class="anijoy-tags"><span>Adventure</span><span>Fantasy</span></div>
+            <div class="anijoy-links">
+              <a href="https://www.crunchyroll.com/" target="_blank" rel="noopener noreferrer">Official streaming</a>
+              <a class="secondary" href="https://myanimelist.net/anime/21" target="_blank" rel="noopener noreferrer">Details</a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+      <p class="anijoy-empty" id="anijoyEmpty">No matching anime found. Try another title or genre! 🔎</p>
+    </section>
+
+    <p class="anijoy-note">
+      AniJoy is an anime discovery guide, not a streaming host. Availability varies by country and service.
+      Use official rights-holder platforms and check the current catalogue in your region.
+      Posters are loaded from external sources and may occasionally fail to display.
+    </p>
+  </main>
+
+  <script>
+    (function () {
+      const searchForm = document.getElementById("anijoySearchForm");
+      const searchInput = document.getElementById("anijoySearch");
+      const filters = document.getElementById("anijoyFilters");
+      const cards = Array.from(document.querySelectorAll(".anijoy-card"));
+      const emptyMessage = document.getElementById("anijoyEmpty");
+      let activeGenre = "all";
+
+      function filterAnime() {
+        const query = searchInput.value.trim().toLowerCase();
+        let visibleCount = 0;
+
+        cards.forEach(function (card) {
+          const title = card.dataset.title || "";
+          const genre = card.dataset.genre || "";
+          const text = card.innerText.toLowerCase();
+          const matchesSearch = !query || title.includes(query) || genre.includes(query) || text.includes(query);
+          const matchesGenre = activeGenre === "all" || genre.split(" ").includes(activeGenre);
+          const show = matchesSearch && matchesGenre;
+
+          card.style.display = show ? "" : "none";
+          if (show) visibleCount++;
+        });
+
+        emptyMessage.style.display = visibleCount ? "none" : "block";
+      }
+
+      searchForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        filterAnime();
+      });
+
+      searchInput.addEventListener("input", filterAnime);
+
+      filters.addEventListener("click", function (event) {
+        const button = event.target.closest("button[data-genre]");
+        if (!button) return;
+
+        activeGenre = button.dataset.genre;
+
+        filters.querySelectorAll("button").forEach(function (item) {
+          item.classList.toggle("active", item === button);
+        });
+
+        filterAnime();
+      });
+    })();
+  </script>
+</body>
+</html>
