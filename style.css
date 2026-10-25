@@ -1412,3 +1412,85 @@ body {
 }
 
 /* ===== End Horizontal Blog Carousel ===== */
+/* ===== AnimeVerse: Compact Horizontal Card Rows ===== */
+
+/* Make content cards smaller and swipeable */
+.content-section .card-grid,
+.fan-art-section .fan-art-grid {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 16px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 10px 4px 20px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+}
+
+/* Compact cards */
+.content-section .card-grid > .card,
+.fan-art-section .fan-art-grid > .fan-art-card {
+  flex: 0 0 220px;
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+/* Smaller images */
+.content-section .card > img,
+.content-section .card .thumbnail img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+}
+
+/* Compact card text and spacing */
+.content-section .card-body {
+  padding: 12px;
+}
+
+.content-section .card-body h3 {
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.content-section .card-body p {
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+/* Smaller fan-art cards */
+.fan-art-section .fan-art-card .fan-art-image-link {
+  aspect-ratio: 4 / 3;
+}
+
+/* Scrollbar styling */
+.content-section .card-grid::-webkit-scrollbar,
+.fan-art-section .fan-art-grid::-webkit-scrollbar {
+  height: 6px;
+}
+
+.content-section .card-grid::-webkit-scrollbar-thumb,
+.fan-art-section .fan-art-grid::-webkit-scrollbar-thumb {
+  background: #a78bfa;
+  border-radius: 20px;
+}
+
+/* Smaller cards on phones */
+@media (max-width: 600px) {
+  .content-section .card-grid > .card,
+  .fan-art-section .fan-art-grid > .fan-art-card {
+    flex-basis: 175px;
+  }
+
+  .content-section .card > img,
+  .content-section .card .thumbnail img {
+    height: 115px;
+  }
+
+  .content-section .card-body {
+    padding: 10px;
+  }
+}
+
+/* ===== End Compact Horizontal Card Rows ===== */
