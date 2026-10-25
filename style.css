@@ -1494,3 +1494,58 @@ body {
 }
 
 /* ===== End Compact Horizontal Card Rows ===== */
+/* ===== Restore Original Desktop Layout ===== */
+
+@media (min-width: 768px) {
+  .content-section .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    overflow: visible;
+    scroll-snap-type: none;
+    padding: 12px 0 24px;
+  }
+
+  .content-section .card-grid > .card {
+    flex: initial;
+    min-width: 0;
+  }
+
+  .content-section .card > img,
+  .content-section .card .thumbnail img {
+    height: auto;
+  }
+
+  .content-section .card .thumbnail img {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  .content-section .card-body {
+    padding: 20px;
+  }
+
+  .content-section .card-body h3 {
+    font-size: 1.25rem;
+  }
+
+  .content-section .card-body p {
+    font-size: 1rem;
+  }
+
+  .fan-art-section .fan-art-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    overflow: visible;
+    scroll-snap-type: none;
+    padding: 12px 0 24px;
+  }
+
+  .fan-art-section .fan-art-grid > .fan-art-card {
+    flex: initial;
+    min-width: 0;
+  }
+}
+
+/* ===== End Original Desktop Layout ===== */
