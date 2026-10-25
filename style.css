@@ -1573,9 +1573,13 @@ body {
 }
 
 #blogs .card-body p,
-#blogs .card-body .card-meta,
-#blogs .card-body .card-link {
+#blogs .card-body .card-meta {
   display: none;
+}
+
+#blogs .card-body .card-link {
+  display: inline-block;
+  margin-top: 10px;
 }
 
 #blogs .card-body h3 {
