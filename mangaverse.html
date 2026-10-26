@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#20123f">
   <title>MangaVerse | AnimeVerse</title>
+
   <style>
     :root {
       --bg: #f6f4fb;
@@ -22,7 +24,11 @@
       color: var(--text);
     }
 
-    .page { max-width: 1150px; margin: auto; padding: 20px 16px 50px; }
+    .page {
+      max-width: 1150px;
+      margin: auto;
+      padding: 20px 16px 50px;
+    }
 
     .back {
       display: inline-block;
@@ -40,295 +46,673 @@
       background: linear-gradient(135deg, #20123f, #5631a3, #173c63);
     }
 
-    .hero h1 { margin: 0 0 10px; font-size: clamp(2rem, 6vw, 3.4rem); }
-    .hero p { line-height: 1.6; max-width: 600px; margin: 0 auto 20px; }
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(2rem, 6vw, 3.4rem);
+    }
 
-    .search { display: flex; gap: 8px; max-width: 600px; margin: auto; }
-    .search input { flex: 1; min-width: 0; padding: 13px; border: 0; border-radius: 8px; font-size: 16px; }
+    .hero p {
+      max-width: 620px;
+      margin: 0 auto 20px;
+      line-height: 1.6;
+    }
+
+    .search {
+      display: flex;
+      gap: 8px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .search input {
+      flex: 1;
+      min-width: 0;
+      padding: 13px;
+      border: 0;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
     button { cursor: pointer; font: inherit; }
-    .search button { padding: 12px 18px; border: 0; border-radius: 8px; background: #ffd166; font-weight: bold; }
+
+    .search button {
+      padding: 12px 18px;
+      border: 0;
+      border-radius: 8px;
+      background: #ffd166;
+      font-weight: bold;
+    }
 
     h2 { margin-top: 28px; }
 
-    .filters { display: flex; gap: 9px; overflow-x: auto; padding: 8px 0 16px; }
-    .filters button { flex: 0 0 auto; padding: 10px 15px; border: 0; border-radius: 9px; background: var(--soft); color: var(--accent); font-weight: bold; }
-    .filters button.active { background: var(--accent); color: white; }
+    .filter-label {
+      margin: 22px 0 8px;
+      font-weight: bold;
+    }
 
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 18px; }
+    .filters {
+      display: flex;
+      gap: 9px;
+      overflow-x: auto;
+      padding: 8px 0 16px;
+    }
 
-    .manga-card {
+    .filters button {
+      flex: 0 0 auto;
+      padding: 10px 15px;
+      border: 0;
+      border-radius: 9px;
+      background: var(--soft);
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    .filters button.active {
+      background: var(--accent);
+      color: white;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
       display: block;
       overflow: hidden;
       background: var(--card);
       color: var(--text);
       text-decoration: none;
       border-radius: 12px;
-      box-shadow: 0 4px 15px #00000012;
       border: 1px solid #ddd7e8;
+      box-shadow: 0 4px 15px #00000012;
+      transition: transform .2s;
     }
 
-    .manga-card img { width: 100%; height: 245px; display: block; object-fit: cover; background: #ddd; }
+    .card:hover { transform: translateY(-4px); }
+
+    .card img {
+      display: block;
+      width: 100%;
+      height: 245px;
+      object-fit: cover;
+      background: #eae3fb;
+    }
+
     .card-body { padding: 11px; }
-    .card-body h3 { font-size: 15px; line-height: 1.35; margin: 0 0 7px; }
-    .rating { margin: 0; font-size: 13px; font-weight: bold; }
 
-    .empty { display: none; text-align: center; padding: 25px; }
+    .card-body h3 {
+      font-size: 15px;
+      line-height: 1.35;
+      margin: 0 0 7px;
+    }
 
-    .detail { display: none; margin-top: 24px; padding: 20px; border-radius: 14px; background: white; }
+    .type {
+      display: inline-block;
+      padding: 4px 7px;
+      margin-bottom: 8px;
+      border-radius: 5px;
+      background: var(--soft);
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .rating {
+      margin: 0;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .empty {
+      display: none;
+      text-align: center;
+      padding: 25px;
+    }
+
+    .detail {
+      display: none;
+      margin-top: 24px;
+      padding: 20px;
+      border-radius: 14px;
+      background: white;
+    }
+
     .detail.active { display: block; }
-    .detail-inner { display: grid; grid-template-columns: minmax(120px, 200px) 1fr; gap: 20px; }
-    .detail img { width: 100%; max-height: 300px; object-fit: cover; border-radius: 8px; }
+
+    .detail-inner {
+      display: grid;
+      grid-template-columns: minmax(120px, 200px) 1fr;
+      gap: 20px;
+    }
+
+    .detail img {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 8px;
+      background: #eae3fb;
+    }
+
     .detail p { line-height: 1.7; }
-    .back-button { border: 0; background: var(--accent); color: white; padding: 10px 14px; border-radius: 8px; margin-bottom: 15px; }
-    .note { font-size: 12px; line-height: 1.6; margin-top: 28px; color: #62596f; }
+
+    .back-button {
+      border: 0;
+      background: var(--accent);
+      color: white;
+      padding: 10px 14px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    .note {
+      font-size: 12px;
+      line-height: 1.6;
+      margin-top: 28px;
+      color: #62596f;
+    }
 
     @media (max-width: 480px) {
       .search { flex-direction: column; }
       .search button { width: 100%; }
-      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-      .manga-card img { height: 205px; }
+
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .card img { height: 205px; }
       .detail-inner { grid-template-columns: 1fr; }
       .detail img { max-width: 190px; }
     }
   </style>
 </head>
+
 <body>
-  <main class="page">
-    <a class="back" href="index.html">← Back to AnimeVerse</a>
+<main class="page">
 
-    <header class="hero">
-      <h1>MangaVerse</h1>
-      <p>Discover manga adventures, fantasy worlds, mysteries, and unforgettable stories.</p>
-      <form class="search" id="searchForm">
-        <input type="search" id="searchInput" placeholder="Search manga or genre..." aria-label="Search manga">
-        <button type="submit">Search</button>
-      </form>
-    </header>
+  <a class="back" href="index.html">← Back to AnimeVerse</a>
 
-    <section id="collection">
-      <h2>Explore Manga</h2>
-      <div class="filters" id="filters">
-        <button class="active" type="button" data-genre="all">All Manga</button>
-        <button type="button" data-genre="action">Action</button>
-        <button type="button" data-genre="fantasy">Fantasy</button>
-        <button type="button" data-genre="adventure">Adventure</button>
-        <button type="button" data-genre="romance">Romance</button>
-        <button type="button" data-genre="comedy">Comedy</button>
-        <button type="button" data-genre="mystery">Mystery</button>
-        <button type="button" data-genre="drama">Drama</button>
+  <header class="hero" id="hero">
+    <h1>MangaVerse</h1>
+    <p>
+      Explore Japanese manga, Korean manhwa, Chinese manhua,
+      webtoons, and light novels in one place.
+    </p>
+
+    <form class="search" id="searchForm">
+      <input
+        type="search"
+        id="searchInput"
+        placeholder="Search titles, types, or genres..."
+        aria-label="Search titles, types, or genres"
+      >
+      <button type="submit">Search</button>
+    </form>
+  </header>
+
+  <section id="collection">
+    <h2>Explore the Collection</h2>
+
+    <p class="filter-label">Choose a category</p>
+    <div class="filters" id="typeFilters">
+      <button type="button" class="active" data-type="all">All</button>
+      <button type="button" data-type="Manga">Manga</button>
+      <button type="button" data-type="Manhwa">Manhwa</button>
+      <button type="button" data-type="Manhua">Manhua</button>
+      <button type="button" data-type="Webtoon">Webtoons</button>
+      <button type="button" data-type="Light Novel">Light Novels</button>
+    </div>
+
+    <p class="filter-label">Choose a genre</p>
+    <div class="filters" id="genreFilters">
+      <button type="button" class="active" data-genre="all">All Genres</button>
+      <button type="button" data-genre="action">Action</button>
+      <button type="button" data-genre="fantasy">Fantasy</button>
+      <button type="button" data-genre="adventure">Adventure</button>
+      <button type="button" data-genre="romance">Romance</button>
+      <button type="button" data-genre="comedy">Comedy</button>
+      <button type="button" data-genre="mystery">Mystery</button>
+      <button type="button" data-genre="drama">Drama</button>
+      <button type="button" data-genre="sports">Sports</button>
+    </div>
+
+    <div class="grid" id="catalogGrid"></div>
+
+    <p class="empty" id="emptyMessage">
+      No titles found. Try another search or filter.
+    </p>
+  </section>
+
+  <section class="detail" id="detail" tabindex="-1" aria-live="polite">
+    <button type="button" class="back-button" id="backButton">
+      ← Back to collection
+    </button>
+
+    <div class="detail-inner">
+      <img id="detailImage" src="" alt="">
+
+      <div>
+        <span class="type" id="detailType"></span>
+        <h2 id="detailTitle"></h2>
+        <p id="detailRating"></p>
+        <p id="detailDescription"></p>
+        <p><strong>Genres:</strong> <span id="detailGenres"></span></p>
+        <p>
+          Official reading and purchasing links will be added
+          after checking availability.
+        </p>
       </div>
+    </div>
+  </section>
 
-      <div class="grid" id="mangaGrid">
-        <a href="#one-piece" class="manga-card" data-id="one-piece" data-title="one piece" data-genre="action adventure fantasy">
-          <img src="https://cdn.myanimelist.net/images/manga/2/253146l.jpg" alt="One Piece manga cover" loading="lazy">
-          <div class="card-body"><h3>One Piece</h3><p class="rating">⭐ 9.2</p></div>
-        </a>
+  <p class="note">
+    MangaVerse is a discovery guide, not a comic or book hosting service.
+    Ratings are reference values and may change. Cover images are loaded
+    from external sources. If an image fails, a labelled placeholder
+    appears instead.
+  </p>
 
-        <a href="#naruto" class="manga-card" data-id="naruto" data-title="naruto" data-genre="action adventure fantasy">
-          <img src="https://cdn.myanimelist.net/images/manga/3/249658l.jpg" alt="Naruto manga cover" loading="lazy">
-          <div class="card-body"><h3>Naruto</h3><p class="rating">⭐ 8.7</p></div>
-        </a>
+</main>
 
-        <a href="#berserk" class="manga-card" data-id="berserk" data-title="berserk" data-genre="action fantasy drama">
-          <img src="https://cdn.myanimelist.net/images/manga/1/157897l.jpg" alt="Berserk manga cover" loading="lazy">
-          <div class="card-body"><h3>Berserk</h3><p class="rating">⭐ 9.4</p></div>
-        </a>
+<script>
+(function () {
+  const titles = [
+    {
+      id: "one-piece",
+      title: "One Piece",
+      type: "Manga",
+      genre: ["action", "adventure", "fantasy"],
+      rating: "9.2",
+      image: "https://cdn.myanimelist.net/images/manga/2/253146l.jpg",
+      description: "Monkey D. Luffy and his crew sail across dangerous seas in search of the legendary treasure."
+    },
+    {
+      id: "naruto",
+      title: "Naruto",
+      type: "Manga",
+      genre: ["action", "adventure", "fantasy"],
+      rating: "8.7",
+      image: "https://cdn.myanimelist.net/images/manga/3/249658l.jpg",
+      description: "A young ninja faces challenges and works toward his dream of becoming Hokage."
+    },
+    {
+      id: "berserk",
+      title: "Berserk",
+      type: "Manga",
+      genre: ["action", "fantasy", "drama"],
+      rating: "9.4",
+      image: "https://cdn.myanimelist.net/images/manga/1/157897l.jpg",
+      description: "A dark fantasy following the warrior Guts through a harsh and unforgiving world."
+    },
+    {
+      id: "demon-slayer",
+      title: "Demon Slayer",
+      type: "Manga",
+      genre: ["action", "fantasy", "adventure"],
+      rating: "8.5",
+      image: "https://cdn.myanimelist.net/images/manga/1/210120l.jpg",
+      description: "Tanjiro trains to fight demons while searching for a way to help his sister."
+    },
+    {
+      id: "spy-family",
+      title: "Spy x Family",
+      type: "Manga",
+      genre: ["action", "comedy"],
+      rating: "8.5",
+      image: "https://cdn.myanimelist.net/images/manga/3/219741l.jpg",
+      description: "A spy, an assassin, and a telepath form an unusual family while hiding their secrets."
+    },
+    {
+      id: "death-note",
+      title: "Death Note",
+      type: "Manga",
+      genre: ["mystery", "drama"],
+      rating: "8.8",
+      image: "https://cdn.myanimelist.net/images/manga/1/11878l.jpg",
+      description: "A mysterious notebook draws a student into a tense battle of intelligence and justice."
+    },
+    {
+      id: "fruits-basket",
+      title: "Fruits Basket",
+      type: "Manga",
+      genre: ["romance", "comedy", "drama"],
+      rating: "8.5",
+      image: "https://cdn.myanimelist.net/images/manga/4/196175l.jpg",
+      description: "Tohru Honda discovers the secrets of the Sohma family and helps them face their struggles."
+    },
+    {
+      id: "horimiya",
+      title: "Horimiya",
+      type: "Manga",
+      genre: ["romance", "comedy", "drama"],
+      rating: "8.5",
+      image: "https://cdn.myanimelist.net/images/manga/3/163045l.jpg",
+      description: "Two classmates discover each other's hidden sides and form an unexpected connection."
+    },
+    {
+      id: "kaguya-sama",
+      title: "Kaguya-sama: Love Is War",
+      type: "Manga",
+      genre: ["romance", "comedy"],
+      rating: "8.8",
+      image: "https://cdn.myanimelist.net/images/manga/3/188896l.jpg",
+      description: "Two student-council leaders turn their growing feelings into a hilarious battle of wits."
+    },
+    {
+      id: "blue-lock",
+      title: "Blue Lock",
+      type: "Manga",
+      genre: ["sports", "action", "drama"],
+      rating: "8.5",
+      image: "https://cdn.myanimelist.net/images/manga/5/227867l.jpg",
+      description: "Young football players compete in a demanding program to become Japan's top striker."
+    },
 
-        <a href="#demon-slayer" class="manga-card" data-id="demon-slayer" data-title="demon slayer kimetsu no yaiba" data-genre="action fantasy adventure">
-          <img src="https://cdn.myanimelist.net/images/manga/1/210120l.jpg" alt="Demon Slayer manga cover" loading="lazy">
-          <div class="card-body"><h3>Demon Slayer</h3><p class="rating">⭐ 8.5</p></div>
-        </a>
+    {
+      id: "solo-leveling",
+      title: "Solo Leveling",
+      type: "Manhwa",
+      genre: ["action", "fantasy", "adventure"],
+      rating: "8.7",
+      image: "",
+      description: "Sung Jinwoo gains a mysterious ability that lets him grow stronger while facing dangerous dungeons."
+    },
+    {
+      id: "omniscient-reader",
+      title: "Omniscient Reader's Viewpoint",
+      type: "Manhwa",
+      genre: ["action", "fantasy", "adventure"],
+      rating: "8.8",
+      image: "",
+      description: "A reader finds himself inside the world of a story he knows and must survive its deadly scenarios."
+    },
+    {
+      id: "true-beauty",
+      title: "True Beauty",
+      type: "Manhwa",
+      genre: ["romance", "comedy", "drama"],
+      rating: "8.2",
+      image: "",
+      description: "A student navigates school life, friendships, self-expression, and romance."
+    },
+    {
+      id: "lookism",
+      title: "Lookism",
+      type: "Webtoon",
+      genre: ["action", "drama", "comedy"],
+      rating: "8.4",
+      image: "",
+      description: "A student discovers an extraordinary change that makes him see society from a different perspective."
+    },
+    {
+      id: "tower-of-god",
+      title: "Tower of God",
+      type: "Webtoon",
+      genre: ["action", "fantasy", "adventure"],
+      rating: "8.6",
+      image: "",
+      description: "A boy enters a mysterious tower filled with trials, rivals, and powerful secrets."
+    },
+    {
+      id: "the-kings-avatar",
+      title: "The King's Avatar",
+      type: "Manhua",
+      genre: ["action", "drama", "comedy"],
+      rating: "8.4",
+      image: "",
+      description: "A professional esports player starts again after leaving his team and returns to competitive gaming."
+    },
+    {
+      id: "battle-through-heavens",
+      title: "Battle Through the Heavens",
+      type: "Manhua",
+      genre: ["action", "fantasy", "adventure"],
+      rating: "8.3",
+      image: "",
+      description: "A young cultivator sets out to regain his strength and rise through a world of martial arts."
+    },
+    {
+      id: "rezero",
+      title: "Re:Zero",
+      type: "Light Novel",
+      genre: ["fantasy", "drama", "adventure"],
+      rating: "8.6",
+      image: "",
+      description: "Subaru finds himself in another world and discovers that his journey has a strange and difficult cost."
+    },
+    {
+      id: "classroom-of-the-elite",
+      title: "Classroom of the Elite",
+      type: "Light Novel",
+      genre: ["drama", "mystery"],
+      rating: "8.3",
+      image: "",
+      description: "Students compete in a school system where strategy, teamwork, and hidden motives matter."
+    },
+    {
+      id: "mushoku-tensei",
+      title: "Mushoku Tensei",
+      type: "Light Novel",
+      genre: ["fantasy", "adventure", "drama"],
+      rating: "8.5",
+      image: "",
+      description: "A man begins a new life in a fantasy world and tries to make better choices."
+    },
+    {
+      id: "the-beginning-after-the-end",
+      title: "The Beginning After the End",
+      type: "Webtoon",
+      genre: ["action", "fantasy", "adventure"],
+      rating: "8.5",
+      image: "",
+      description: "A former king is reborn into a world of magic and faces a new life full of challenges."
+    }
+  ];
 
-        <a href="#spy-family" class="manga-card" data-id="spy-family" data-title="spy x family" data-genre="action comedy">
-          <img src="https://cdn.myanimelist.net/images/manga/3/219741l.jpg" alt="Spy x Family manga cover" loading="lazy">
-          <div class="card-body"><h3>Spy x Family</h3><p class="rating">⭐ 8.5</p></div>
-        </a>
+  const grid = document.getElementById("catalogGrid");
+  const searchInput = document.getElementById("searchInput");
+  const searchForm = document.getElementById("searchForm");
+  const typeFilters = document.getElementById("typeFilters");
+  const genreFilters = document.getElementById("genreFilters");
+  const collection = document.getElementById("collection");
+  const hero = document.getElementById("hero");
+  const detail = document.getElementById("detail");
+  const emptyMessage = document.getElementById("emptyMessage");
 
-        <a href="#death-note" class="manga-card" data-id="death-note" data-title="death note" data-genre="mystery drama">
-          <img src="https://cdn.myanimelist.net/images/manga/1/157897l.jpg" alt="Death Note manga cover" loading="lazy">
-          <div class="card-body"><h3>Death Note</h3><p class="rating">⭐ 8.8</p></div>
-        </a>
+  let activeType = "all";
+  let activeGenre = "all";
+  let currentTitle = null;
 
-        <a href="#fruits-basket" class="manga-card" data-id="fruits-basket" data-title="fruits basket" data-genre="romance comedy drama">
-          <img src="https://cdn.myanimelist.net/images/manga/4/196175l.jpg" alt="Fruits Basket manga cover" loading="lazy">
-          <div class="card-body"><h3>Fruits Basket</h3><p class="rating">⭐ 8.5</p></div>
-        </a>
+  function makeCover(title) {
+    const safeTitle = String(title)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
 
-        <a href="#horimiya" class="manga-card" data-id="horimiya" data-title="horimiya" data-genre="romance comedy drama">
-          <img src="https://cdn.myanimelist.net/images/manga/1/258245l.jpg" alt="Horimiya manga cover" loading="lazy">
-          <div class="card-body"><h3>Horimiya</h3><p class="rating">⭐ 8.5</p></div>
-        </a>
+    const svg = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="400" height="600">
+        <defs>
+          <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#20123f"/>
+            <stop offset="100%" stop-color="#5631a3"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="600" fill="url(#bg)"/>
+        <rect x="18" y="18" width="364" height="564" rx="14"
+              fill="none" stroke="#ffd166" stroke-width="3"/>
+        <text x="200" y="240" text-anchor="middle" fill="#ffd166"
+              font-size="24" font-family="Arial">MANGAVERSE</text>
+        <text x="200" y="305" text-anchor="middle" fill="white"
+              font-size="25" font-weight="bold" font-family="Arial">${safeTitle}</text>
+        <text x="200" y="355" text-anchor="middle" fill="#eae3fb"
+              font-size="18" font-family="Arial">Cover unavailable</text>
+      </svg>`;
 
-        <a href="#kaguya-sama" class="manga-card" data-id="kaguya-sama" data-title="kaguya sama love is war" data-genre="romance comedy">
-          <img src="https://cdn.myanimelist.net/images/manga/3/188896l.jpg" alt="Kaguya-sama manga cover" loading="lazy">
-          <div class="card-body"><h3>Kaguya-sama: Love Is War</h3><p class="rating">⭐ 8.8</p></div>
-        </a>
+    return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg);
+  }
 
-        <a href="#blue-lock" class="manga-card" data-id="blue-lock" data-title="blue lock" data-genre="action drama">
-          <img src="https://cdn.myanimelist.net/images/manga/5/227867l.jpg" alt="Blue Lock manga cover" loading="lazy">
-          <div class="card-body"><h3>Blue Lock</h3><p class="rating">⭐ 8.5</p></div>
-        </a>
-      </div>
+  function createCard(item) {
+    const card = document.createElement("a");
+    card.href = "#" + item.id;
+    card.className = "card";
+    card.dataset.id = item.id;
+    card.dataset.title = item.title.toLowerCase();
+    card.dataset.type = item.type;
+    card.dataset.genre = item.genre.join(" ");
 
-      <p class="empty" id="emptyMessage">No manga found. Try another search or genre.</p>
-    </section>
+    const img = document.createElement("img");
+    img.alt = item.title + " cover";
+    img.loading = "lazy";
+    img.src = item.image || makeCover(item.title);
 
-    <section class="detail" id="detail" tabindex="-1" aria-live="polite">
-      <button type="button" class="back-button" id="backButton">← Back to manga</button>
-      <div class="detail-inner">
-        <img id="detailImage" src="" alt="">
-        <div>
-          <h2 id="detailTitle"></h2>
-          <p id="detailRating"></p>
-          <p id="detailDescription"></p>
-          <p><strong>Genres:</strong> <span id="detailGenres"></span></p>
-          <p>Reading links are not available yet. We'll add official, legally available reading options after checking availability and permissions.</p>
-        </div>
-      </div>
-    </section>
+    img.addEventListener("error", function () {
+      img.onerror = null;
+      img.src = makeCover(item.title);
+    });
 
-    <p class="note">MangaVerse is a discovery guide, not a manga-hosting service. Ratings are reference values and may change. Cover images are loaded from an external image host.</p>
-  </main>
+    const body = document.createElement("div");
+    body.className = "card-body";
 
-  <script>
-    (function () {
-      const cards = Array.from(document.querySelectorAll(".manga-card"));
-      const searchInput = document.getElementById("searchInput");
-      const searchForm = document.getElementById("searchForm");
-      const filters = document.getElementById("filters");
-      const emptyMessage = document.getElementById("emptyMessage");
-      const collection = document.getElementById("collection");
-      const hero = document.querySelector(".hero");
-      const detail = document.getElementById("detail");
-      let activeGenre = "all";
+    const type = document.createElement("span");
+    type.className = "type";
+    type.textContent = item.type;
 
-      const data = {
-        "one-piece": {
-          title: "One Piece", rating: "⭐ 9.2 reference rating",
-          description: "Monkey D. Luffy and his crew sail across dangerous seas in search of the legendary treasure.",
-          genres: "Action, Adventure, Fantasy"
-        },
-        "naruto": {
-          title: "Naruto", rating: "⭐ 8.7 reference rating",
-          description: "A young ninja faces challenges and works toward his dream of becoming Hokage.",
-          genres: "Action, Adventure, Fantasy"
-        },
-        "berserk": {
-          title: "Berserk", rating: "⭐ 9.4 reference rating",
-          description: "A dark fantasy story following the warrior Guts through a harsh and unforgiving world.",
-          genres: "Action, Fantasy, Drama"
-        },
-        "demon-slayer": {
-          title: "Demon Slayer", rating: "⭐ 8.5 reference rating",
-          description: "Tanjiro trains to fight demons while searching for a way to help his sister.",
-          genres: "Action, Fantasy, Adventure"
-        },
-        "spy-family": {
-          title: "Spy x Family", rating: "⭐ 8.5 reference rating",
-          description: "A spy, an assassin, and a telepath form an unusual family while hiding their secrets.",
-          genres: "Action, Comedy"
-        },
-        "death-note": {
-          title: "Death Note", rating: "⭐ 8.8 reference rating",
-          description: "A mysterious notebook draws a student into a tense battle of intelligence and justice.",
-          genres: "Mystery, Drama"
-        },
-        "fruits-basket": {
-          title: "Fruits Basket", rating: "⭐ 8.5 reference rating",
-          description: "Tohru Honda discovers the secrets of the Sohma family and helps them face their struggles.",
-          genres: "Romance, Comedy, Drama"
-        },
-        "horimiya": {
-          title: "Horimiya", rating: "⭐ 8.5 reference rating",
-          description: "Two classmates discover each other's hidden sides and form an unexpected connection.",
-          genres: "Romance, Comedy, Drama"
-        },
-        "kaguya-sama": {
-          title: "Kaguya-sama: Love Is War", rating: "⭐ 8.8 reference rating",
-          description: "Two student-council leaders turn their growing feelings into a hilarious battle of wits.",
-          genres: "Romance, Comedy"
-        },
-        "blue-lock": {
-          title: "Blue Lock", rating: "⭐ 8.5 reference rating",
-          description: "Young football players compete in a demanding program to become Japan's top striker.",
-          genres: "Action, Drama"
-        }
-      };
+    const title = document.createElement("h3");
+    title.textContent = item.title;
 
-      function filterCards() {
-        const query = searchInput.value.trim().toLowerCase();
-        let count = 0;
+    const rating = document.createElement("p");
+    rating.className = "rating";
+    rating.textContent = "⭐ " + item.rating + " (reference)";
 
-        cards.forEach(function (card) {
-          const title = card.dataset.title || "";
-          const genre = card.dataset.genre || "";
-          const matchesQuery = !query || title.includes(query) || genre.includes(query);
-          const matchesGenre = activeGenre === "all" || genre.split(" ").includes(activeGenre);
-          const visible = matchesQuery && matchesGenre;
+    body.append(type, title, rating);
+    card.append(img, body);
 
-          card.style.display = visible ? "" : "none";
-          if (visible) count++;
-        });
+    card.addEventListener("click", function (event) {
+      event.preventDefault();
+      openDetail(item, img);
+    });
 
-        emptyMessage.style.display = count ? "none" : "block";
-      }
+    return card;
+  }
 
-      function openDetail(card) {
-        const item = data[card.dataset.id];
-        if (!item) return;
+  function renderCards() {
+    grid.replaceChildren();
 
-        document.getElementById("detailTitle").textContent = item.title;
-        document.getElementById("detailRating").textContent = item.rating;
-        document.getElementById("detailDescription").textContent = item.description;
-        document.getElementById("detailGenres").textContent = item.genres;
+    titles.forEach(function (item) {
+      grid.appendChild(createCard(item));
+    });
 
-        const sourceImage = card.querySelector("img");
-        const detailImage = document.getElementById("detailImage");
-        detailImage.src = sourceImage.src;
-        detailImage.alt = sourceImage.alt;
+    filterCards();
+  }
 
-        hero.hidden = true;
-        collection.hidden = true;
-        detail.classList.add("active");
-        detail.focus();
-        history.replaceState(null, "", "#" + card.dataset.id);
-      }
+  function filterCards() {
+    const query = searchInput.value.trim().toLowerCase();
+    let count = 0;
 
-      cards.forEach(function (card) {
-        card.addEventListener("click", function (event) {
-          event.preventDefault();
-          openDetail(card);
-        });
-      });
+    Array.from(grid.children).forEach(function (card) {
+      const title = card.dataset.title;
+      const type = card.dataset.type.toLowerCase();
+      const genre = card.dataset.genre;
 
-      document.getElementById("backButton").addEventListener("click", function () {
-        detail.classList.remove("active");
-        hero.hidden = false;
-        collection.hidden = false;
-        history.replaceState(null, "", location.pathname);
-        collection.scrollIntoView({ behavior: "smooth", block: "start" });
-      });
+      const matchesQuery =
+        !query ||
+        title.includes(query) ||
+        type.includes(query) ||
+        genre.includes(query);
 
-      searchForm.addEventListener("submit", function (event) {
-        event.preventDefault();
-        filterCards();
-      });
+      const matchesType =
+        activeType === "all" || card.dataset.type === activeType;
 
-      searchInput.addEventListener("input", filterCards);
+      const matchesGenre =
+        activeGenre === "all" ||
+        genre.split(" ").includes(activeGenre);
 
-      filters.addEventListener("click", function (event) {
-        const button = event.target.closest("button[data-genre]");
-        if (!button) return;
+      const visible = matchesQuery && matchesType && matchesGenre;
 
-        activeGenre = button.dataset.genre;
+      card.style.display = visible ? "" : "none";
 
-        filters.querySelectorAll("button").forEach(function (item) {
-          item.classList.toggle("active", item === button);
-        });
+      if (visible) count++;
+    });
 
-        filterCards();
-      });
-    })();
-  </script>
+    emptyMessage.style.display = count ? "none" : "block";
+  }
+
+  function openDetail(item, cardImage) {
+    currentTitle = item;
+
+    document.getElementById("detailType").textContent = item.type;
+    document.getElementById("detailTitle").textContent = item.title;
+    document.getElementById("detailRating").textContent =
+      "⭐ " + item.rating + " reference rating";
+    document.getElementById("detailDescription").textContent =
+      item.description;
+    document.getElementById("detailGenres").textContent =
+      item.genre.map(function (g) {
+        return g.charAt(0).toUpperCase() + g.slice(1);
+      }).join(", ");
+
+    const detailImage = document.getElementById("detailImage");
+    detailImage.src = cardImage.src;
+    detailImage.alt = item.title + " cover";
+
+    hero.hidden = true;
+    collection.hidden = true;
+    detail.classList.add("active");
+
+    history.replaceState(null, "", "#" + item.id);
+    detail.focus();
+  }
+
+  document.getElementById("backButton").addEventListener("click", function () {
+    detail.classList.remove("active");
+    hero.hidden = false;
+    collection.hidden = false;
+
+    history.replaceState(null, "", location.pathname);
+
+    collection.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  });
+
+  searchForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    filterCards();
+  });
+
+  searchInput.addEventListener("input", filterCards);
+
+  typeFilters.addEventListener("click", function (event) {
+    const button = event.target.closest("button[data-type]");
+    if (!button) return;
+
+    activeType = button.dataset.type;
+
+    typeFilters.querySelectorAll("button").forEach(function (item) {
+      item.classList.toggle("active", item === button);
+    });
+
+    filterCards();
+  });
+
+  genreFilters.addEventListener("click", function (event) {
+    const button = event.target.closest("button[data-genre]");
+    if (!button) return;
+
+    activeGenre = button.dataset.genre;
+
+    genreFilters.querySelectorAll("button").forEach(function (item) {
+      item.classList.toggle("active", item === button);
+    });
+
+    filterCards();
+  });
+
+  renderCards();
+})();
+</script>
 </body>
 </html>
