@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MangaVerse | AnimeVerse</title>
+  <style>
+    :root {
+      --bg: #f6f4fb;
+      --card: #fff;
+      --text: #211b30;
+      --accent: #5631a3;
+      --soft: #eae3fb;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .page { max-width: 1150px; margin: auto; padding: 20px 16px 50px; }
+
+    .back {
+      display: inline-block;
+      margin-bottom: 18px;
+      color: var(--accent);
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .hero {
+      padding: 38px 18px;
+      text-align: center;
+      color: white;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #20123f, #5631a3, #173c63);
+    }
+
+    .hero h1 { margin: 0 0 10px; font-size: clamp(2rem, 6vw, 3.4rem); }
+    .hero p { line-height: 1.6; max-width: 600px; margin: 0 auto 20px; }
+
+    .search { display: flex; gap: 8px; max-width: 600px; margin: auto; }
+    .search input { flex: 1; min-width: 0; padding: 13px; border: 0; border-radius: 8px; font-size: 16px; }
+    button { cursor: pointer; font: inherit; }
+    .search button { padding: 12px 18px; border: 0; border-radius: 8px; background: #ffd166; font-weight: bold; }
+
+    h2 { margin-top: 28px; }
+
+    .filters { display: flex; gap: 9px; overflow-x: auto; padding: 8px 0 16px; }
+    .filters button { flex: 0 0 auto; padding: 10px 15px; border: 0; border-radius: 9px; background: var(--soft); color: var(--accent); font-weight: bold; }
+    .filters button.active { background: var(--accent); color: white; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 18px; }
+
+    .manga-card {
+      display: block;
+      overflow: hidden;
+      background: var(--card);
+      color: var(--text);
+      text-decoration: none;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px #00000012;
+      border: 1px solid #ddd7e8;
+    }
+
+    .manga-card img { width: 100%; height: 245px; display: block; object-fit: cover; background: #ddd; }
+    .card-body { padding: 11px; }
+    .card-body h3 { font-size: 15px; line-height: 1.35; margin: 0 0 7px; }
+    .rating { margin: 0; font-size: 13px; font-weight: bold; }
+
+    .empty { display: none; text-align: center; padding: 25px; }
+
+    .detail { display: none; margin-top: 24px; padding: 20px; border-radius: 14px; background: white; }
+    .detail.active { display: block; }
+    .detail-inner { display: grid; grid-template-columns: minmax(120px, 200px) 1fr; gap: 20px; }
+    .detail img { width: 100%; max-height: 300px; object-fit: cover; border-radius: 8px; }
+    .detail p { line-height: 1.7; }
+    .back-button { border: 0; background: var(--accent); color: white; padding: 10px 14px; border-radius: 8px; margin-bottom: 15px; }
+    .note { font-size: 12px; line-height: 1.6; margin-top: 28px; color: #62596f; }
+
+    @media (max-width: 480px) {
+      .search { flex-direction: column; }
+      .search button { width: 100%; }
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+      .manga-card img { height: 205px; }
+      .detail-inner { grid-template-columns: 1fr; }
+      .detail img { max-width: 190px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <a class="back" href="index.html">← Back to AnimeVerse</a>
+
+    <header class="hero">
+      <h1>MangaVerse</h1>
+      <p>Discover manga adventures, fantasy worlds, mysteries, and unforgettable stories.</p>
+      <form class="search" id="searchForm">
+        <input type="search" id="searchInput" placeholder="Search manga or genre..." aria-label="Search manga">
+        <button type="submit">Search</button>
+      </form>
+    </header>
+
+    <section id="collection">
+      <h2>Explore Manga</h2>
+      <div class="filters" id="filters">
+        <button class="active" type="button" data-genre="all">All Manga</button>
+        <button type="button" data-genre="action">Action</button>
+        <button type="button" data-genre="fantasy">Fantasy</button>
+        <button type="button" data-genre="adventure">Adventure</button>
+        <button type="button" data-genre="romance">Romance</button>
+        <button type="button" data-genre="comedy">Comedy</button>
+        <button type="button" data-genre="mystery">Mystery</button>
+        <button type="button" data-genre="drama">Drama</button>
+      </div>
+
+      <div class="grid" id="mangaGrid">
+        <a href="#one-piece" class="manga-card" data-id="one-piece" data-title="one piece" data-genre="action adventure fantasy">
+          <img src="https://cdn.myanimelist.net/images/manga/2/253146l.jpg" alt="One Piece manga cover" loading="lazy">
+          <div class="card-body"><h3>One Piece</h3><p class="rating">⭐ 9.2</p></div>
+        </a>
+
+        <a href="#naruto" class="manga-card" data-id="naruto" data-title="naruto" data-genre="action adventure fantasy">
+          <img src="https://cdn.myanimelist.net/images/manga/3/249658l.jpg" alt="Naruto manga cover" loading="lazy">
+          <div class="card-body"><h3>Naruto</h3><p class="rating">⭐ 8.7</p></div>
+        </a>
+
+        <a href="#berserk" class="manga-card" data-id="berserk" data-title="berserk" data-genre="action fantasy drama">
+          <img src="https://cdn.myanimelist.net/images/manga/1/157897l.jpg" alt="Berserk manga cover" loading="lazy">
+          <div class="card-body"><h3>Berserk</h3><p class="rating">⭐ 9.4</p></div>
+        </a>
+
+        <a href="#demon-slayer" class="manga-card" data-id="demon-slayer" data-title="demon slayer kimetsu no yaiba" data-genre="action fantasy adventure">
+          <img src="https://cdn.myanimelist.net/images/manga/1/210120l.jpg" alt="Demon Slayer manga cover" loading="lazy">
+          <div class="card-body"><h3>Demon Slayer</h3><p class="rating">⭐ 8.5</p></div>
+        </a>
+
+        <a href="#spy-family" class="manga-card" data-id="spy-family" data-title="spy x family" data-genre="action comedy">
+          <img src="https://cdn.myanimelist.net/images/manga/3/219741l.jpg" alt="Spy x Family manga cover" loading="lazy">
+          <div class="card-body"><h3>Spy x Family</h3><p class="rating">⭐ 8.5</p></div>
+        </a>
+
+        <a href="#death-note" class="manga-card" data-id="death-note" data-title="death note" data-genre="mystery drama">
+          <img src="https://cdn.myanimelist.net/images/manga/1/157897l.jpg" alt="Death Note manga cover" loading="lazy">
+          <div class="card-body"><h3>Death Note</h3><p class="rating">⭐ 8.8</p></div>
+        </a>
+
+        <a href="#fruits-basket" class="manga-card" data-id="fruits-basket" data-title="fruits basket" data-genre="romance comedy drama">
+          <img src="https://cdn.myanimelist.net/images/manga/4/196175l.jpg" alt="Fruits Basket manga cover" loading="lazy">
+          <div class="card-body"><h3>Fruits Basket</h3><p class="rating">⭐ 8.5</p></div>
+        </a>
+
+        <a href="#horimiya" class="manga-card" data-id="horimiya" data-title="horimiya" data-genre="romance comedy drama">
+          <img src="https://cdn.myanimelist.net/images/manga/1/258245l.jpg" alt="Horimiya manga cover" loading="lazy">
+          <div class="card-body"><h3>Horimiya</h3><p class="rating">⭐ 8.5</p></div>
+        </a>
+
+        <a href="#kaguya-sama" class="manga-card" data-id="kaguya-sama" data-title="kaguya sama love is war" data-genre="romance comedy">
+          <img src="https://cdn.myanimelist.net/images/manga/3/188896l.jpg" alt="Kaguya-sama manga cover" loading="lazy">
+          <div class="card-body"><h3>Kaguya-sama: Love Is War</h3><p class="rating">⭐ 8.8</p></div>
+        </a>
+
+        <a href="#blue-lock" class="manga-card" data-id="blue-lock" data-title="blue lock" data-genre="action drama">
+          <img src="https://cdn.myanimelist.net/images/manga/5/227867l.jpg" alt="Blue Lock manga cover" loading="lazy">
+          <div class="card-body"><h3>Blue Lock</h3><p class="rating">⭐ 8.5</p></div>
+        </a>
+      </div>
+
+      <p class="empty" id="emptyMessage">No manga found. Try another search or genre.</p>
+    </section>
+
+    <section class="detail" id="detail" tabindex="-1" aria-live="polite">
+      <button type="button" class="back-button" id="backButton">← Back to manga</button>
+      <div class="detail-inner">
+        <img id="detailImage" src="" alt="">
+        <div>
+          <h2 id="detailTitle"></h2>
+          <p id="detailRating"></p>
+          <p id="detailDescription"></p>
+          <p><strong>Genres:</strong> <span id="detailGenres"></span></p>
+          <p>Reading links are not available yet. We'll add official, legally available reading options after checking availability and permissions.</p>
+        </div>
+      </div>
+    </section>
+
+    <p class="note">MangaVerse is a discovery guide, not a manga-hosting service. Ratings are reference values and may change. Cover images are loaded from an external image host.</p>
+  </main>
+
+  <script>
+    (function () {
+      const cards = Array.from(document.querySelectorAll(".manga-card"));
+      const searchInput = document.getElementById("searchInput");
+      const searchForm = document.getElementById("searchForm");
+      const filters = document.getElementById("filters");
+      const emptyMessage = document.getElementById("emptyMessage");
+      const collection = document.getElementById("collection");
+      const hero = document.querySelector(".hero");
+      const detail = document.getElementById("detail");
+      let activeGenre = "all";
+
+      const data = {
+        "one-piece": {
+          title: "One Piece", rating: "⭐ 9.2 reference rating",
+          description: "Monkey D. Luffy and his crew sail across dangerous seas in search of the legendary treasure.",
+          genres: "Action, Adventure, Fantasy"
+        },
+        "naruto": {
+          title: "Naruto", rating: "⭐ 8.7 reference rating",
+          description: "A young ninja faces challenges and works toward his dream of becoming Hokage.",
+          genres: "Action, Adventure, Fantasy"
+        },
+        "berserk": {
+          title: "Berserk", rating: "⭐ 9.4 reference rating",
+          description: "A dark fantasy story following the warrior Guts through a harsh and unforgiving world.",
+          genres: "Action, Fantasy, Drama"
+        },
+        "demon-slayer": {
+          title: "Demon Slayer", rating: "⭐ 8.5 reference rating",
+          description: "Tanjiro trains to fight demons while searching for a way to help his sister.",
+          genres: "Action, Fantasy, Adventure"
+        },
+        "spy-family": {
+          title: "Spy x Family", rating: "⭐ 8.5 reference rating",
+          description: "A spy, an assassin, and a telepath form an unusual family while hiding their secrets.",
+          genres: "Action, Comedy"
+        },
+        "death-note": {
+          title: "Death Note", rating: "⭐ 8.8 reference rating",
+          description: "A mysterious notebook draws a student into a tense battle of intelligence and justice.",
+          genres: "Mystery, Drama"
+        },
+        "fruits-basket": {
+          title: "Fruits Basket", rating: "⭐ 8.5 reference rating",
+          description: "Tohru Honda discovers the secrets of the Sohma family and helps them face their struggles.",
+          genres: "Romance, Comedy, Drama"
+        },
+        "horimiya": {
+          title: "Horimiya", rating: "⭐ 8.5 reference rating",
+          description: "Two classmates discover each other's hidden sides and form an unexpected connection.",
+          genres: "Romance, Comedy, Drama"
+        },
+        "kaguya-sama": {
+          title: "Kaguya-sama: Love Is War", rating: "⭐ 8.8 reference rating",
+          description: "Two student-council leaders turn their growing feelings into a hilarious battle of wits.",
+          genres: "Romance, Comedy"
+        },
+        "blue-lock": {
+          title: "Blue Lock", rating: "⭐ 8.5 reference rating",
+          description: "Young football players compete in a demanding program to become Japan's top striker.",
+          genres: "Action, Drama"
+        }
+      };
+
+      function filterCards() {
+        const query = searchInput.value.trim().toLowerCase();
+        let count = 0;
+
+        cards.forEach(function (card) {
+          const title = card.dataset.title || "";
+          const genre = card.dataset.genre || "";
+          const matchesQuery = !query || title.includes(query) || genre.includes(query);
+          const matchesGenre = activeGenre === "all" || genre.split(" ").includes(activeGenre);
+          const visible = matchesQuery && matchesGenre;
+
+          card.style.display = visible ? "" : "none";
+          if (visible) count++;
+        });
+
+        emptyMessage.style.display = count ? "none" : "block";
+      }
+
+      function openDetail(card) {
+        const item = data[card.dataset.id];
+        if (!item) return;
+
+        document.getElementById("detailTitle").textContent = item.title;
+        document.getElementById("detailRating").textContent = item.rating;
+        document.getElementById("detailDescription").textContent = item.description;
+        document.getElementById("detailGenres").textContent = item.genres;
+
+        const sourceImage = card.querySelector("img");
+        const detailImage = document.getElementById("detailImage");
+        detailImage.src = sourceImage.src;
+        detailImage.alt = sourceImage.alt;
+
+        hero.hidden = true;
+        collection.hidden = true;
+        detail.classList.add("active");
+        detail.focus();
+        history.replaceState(null, "", "#" + card.dataset.id);
+      }
+
+      cards.forEach(function (card) {
+        card.addEventListener("click", function (event) {
+          event.preventDefault();
+          openDetail(card);
+        });
+      });
+
+      document.getElementById("backButton").addEventListener("click", function () {
+        detail.classList.remove("active");
+        hero.hidden = false;
+        collection.hidden = false;
+        history.replaceState(null, "", location.pathname);
+        collection.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      searchForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        filterCards();
+      });
+
+      searchInput.addEventListener("input", filterCards);
+
+      filters.addEventListener("click", function (event) {
+        const button = event.target.closest("button[data-genre]");
+        if (!button) return;
+
+        activeGenre = button.dataset.genre;
+
+        filters.querySelectorAll("button").forEach(function (item) {
+          item.classList.toggle("active", item === button);
+        });
+
+        filterCards();
+      });
+    })();
+  </script>
+</body>
+</html>
