@@ -50,14 +50,13 @@ header a {
 .hero {
   padding: 52px 5% 38px;
   text-align: center;
-  background:
-    repeating-linear-gradient(
-      135deg,
-      #171717 0,
-      #171717 12px,
-      #202020 12px,
-      #202020 24px
-    );
+  background: repeating-linear-gradient(
+    135deg,
+    #171717 0,
+    #171717 12px,
+    #202020 12px,
+    #202020 24px
+  );
   border-bottom: 1px solid #383838;
 }
 
@@ -183,43 +182,47 @@ input:focus, select:focus {
   overflow: hidden;
   flex-direction: column;
   justify-content: space-between;
-  background:
-    repeating-linear-gradient(
-      135deg,
-      transparent 0,
-      transparent 16px,
-      rgba(255,255,255,.035) 16px,
-      rgba(255,255,255,.035) 18px
-    ),
-    linear-gradient(145deg, #420509, #111 65%);
+  background: linear-gradient(145deg, #420509, #111);
   border-bottom: 3px solid var(--red);
 }
 
-.cover::before {
-  content: "";
+.cover-image {
   position: absolute;
+  inset: 0;
   z-index: -1;
-  inset: 15% 8%;
-  border: 2px solid rgba(255,255,255,.22);
-  transform: skewY(-7deg);
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  background: #1b1b1b;
 }
 
 .cover::after {
   content: "";
   position: absolute;
-  z-index: -1;
-  width: 180px;
-  height: 180px;
-  right: -65px;
-  bottom: 20px;
-  background: rgba(229,9,20,.2);
-  border: 2px solid rgba(229,9,20,.7);
-  transform: rotate(35deg);
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,.45) 0%,
+    transparent 28%,
+    transparent 48%,
+    rgba(0,0,0,.85) 100%
+  );
+}
+
+.cover-top,
+.cover-bottom {
+  position: relative;
+  z-index: 1;
 }
 
 .cover-top {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 5px;
   color: #eee;
   font-size: 9px;
@@ -233,50 +236,22 @@ input:focus, select:focus {
   color: white;
 }
 
-.cover-art {
-  display: flex;
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 0;
-}
-
-.comic-symbol {
-  width: 105px;
-  height: 125px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 54px;
-  font-weight: 900;
-  text-shadow: 4px 4px 0 #000;
-  border: 3px solid white;
-  background:
-    repeating-linear-gradient(
-      135deg,
-      #191919 0,
-      #191919 7px,
-      #39070b 7px,
-      #39070b 14px
-    );
-  transform: rotate(-5deg);
-  clip-path: polygon(12% 0, 100% 8%, 90% 100%, 0 90%);
+.cover-bottom {
+  margin-top: auto;
 }
 
 .cover-title {
   color: white;
   font-size: clamp(16px, 4vw, 23px);
-  line-height: 1;
+  line-height: 1.1;
   font-weight: 900;
   text-transform: uppercase;
   overflow-wrap: anywhere;
-  text-shadow: 2px 2px 0 #000;
+  text-shadow: 2px 2px 4px #000;
 }
 
 .cover-type {
   display: inline-block;
-  align-self: flex-start;
   margin-top: 7px;
   padding: 4px 7px;
   background: var(--red);
@@ -286,9 +261,7 @@ input:focus, select:focus {
   letter-spacing: 1px;
 }
 
-.card-info {
-  padding: 13px;
-}
+.card-info { padding: 13px; }
 
 .card-info h3 {
   margin: 0 0 8px;
@@ -352,6 +325,17 @@ input:focus, select:focus {
 
 .detail-panel h2 { margin-top: 0; }
 
+.detail-poster {
+  display: block;
+  width: min(100%, 280px);
+  max-height: 380px;
+  object-fit: contain;
+  object-position: top left;
+  margin: 15px 0;
+  border-radius: 8px;
+  background: #080808;
+}
+
 .back-btn {
   padding: 10px 15px;
   background: var(--red);
@@ -389,7 +373,6 @@ footer a { color: #ff454c; }
   .grid { gap: 9px; }
   .card-info { padding: 10px; }
   .cover { min-height: 190px; padding: 9px; }
-  .comic-symbol { width: 80px; height: 100px; }
 }
 </style>
 </head>
@@ -412,7 +395,10 @@ footer a { color: #ff454c; }
 
 <main>
   <div class="tools">
-    <input id="search" type="search" placeholder="Search titles or genres..." aria-label="Search titles or genres">
+    <input id="search" type="search"
+      placeholder="Search titles or genres..."
+      aria-label="Search titles or genres">
+
     <select id="typeSelect" aria-label="Filter by collection type">
       <option value="all">All collections</option>
       <option value="Manga">Manga</option>
@@ -452,35 +438,205 @@ footer a { color: #ff454c; }
 </main>
 
 <footer>
-  <p>© <span id="year"></span> MangaVerse · Part of <a href="index.html">AnimeVerse</a></p>
-  <p>Original comic-inspired designs made for this collection.</p>
+  <p>© <span id="year"></span> MangaVerse · Part of
+    <a href="index.html">AnimeVerse</a>
+  </p>
+  <p>Explore your favourite manga and manhwa.</p>
 </footer>
 
 <script>
 "use strict";
 
 const titles = [
-  {title:"One Piece",type:"Manga",rating:"9.2",genres:["Action","Adventure","Fantasy"],symbol:"海",desc:"Join Monkey D. Luffy and his crew on a grand adventure in search of the legendary One Piece."},
-  {title:"Naruto",type:"Manga",rating:"8.7",genres:["Action","Adventure"],symbol:"忍",desc:"A young ninja works to earn recognition and become the leader of his village."},
-  {title:"Berserk",type:"Manga",rating:"9.4",genres:["Action","Fantasy","Drama"],symbol:"剣",desc:"A dark fantasy story following a lone warrior through a brutal and dangerous world."},
-  {title:"Demon Slayer",type:"Manga",rating:"8.5",genres:["Action","Fantasy","Adventure"],symbol:"鬼",desc:"Tanjiro joins the Demon Slayer Corps while searching for a way to help his sister."},
-  {title:"Spy x Family",type:"Manga",rating:"8.5",genres:["Action","Comedy"],symbol:"X",desc:"A spy, an assassin and a telepath form an unusual family while hiding their secrets."},
-  {title:"Death Note",type:"Manga",rating:"8.8",genres:["Mystery","Drama"],symbol:"死",desc:"A mysterious notebook draws a gifted student into a dangerous battle of wits."},
-  {title:"Fruits Basket",type:"Manga",rating:"8.5",genres:["Romance","Comedy","Drama"],symbol:"花",desc:"A kind-hearted girl discovers the unusual secret behind a troubled family."},
-  {title:"Horimiya",type:"Manga",rating:"8.5",genres:["Romance","Comedy","Drama"],symbol:"恋",desc:"Two classmates discover the sides of each other that they rarely show at school."},
-  {title:"Kaguya-sama: Love Is War",type:"Manga",rating:"8.8",genres:["Romance","Comedy"],symbol:"愛",desc:"Two clever student leaders turn romance into a hilarious battle of strategy."},
-  {title:"Blue Lock",type:"Manga",rating:"8.5",genres:["Sports","Action","Drama"],symbol:"⚽",desc:"Strikers compete in an intense program designed to create Japan's ultimate forward."},
-  {title:"Solo Leveling",type:"Manhwa",rating:"8.7",genres:["Action","Fantasy","Adventure"],symbol:"影",desc:"A low-ranked hunter encounters a mysterious system that gives him a chance to grow stronger."},
-  {title:"Omniscient Reader’s Viewpoint",type:"Manhwa",rating:"8.8",genres:["Action","Fantasy","Adventure"],symbol:"書",desc:"A reader finds the world transformed into the story he alone knows from beginning to end."},
-  {title:"True Beauty",type:"Webtoon",rating:"8.2",genres:["Romance","Comedy","Drama"],symbol:"美",desc:"A young woman explores confidence, friendship and romance while navigating school life."},
-  {title:"Lookism",type:"Webtoon",rating:"8.4",genres:["Action","Drama","Comedy"],symbol:"顔",desc:"A student experiences life from a new perspective after an extraordinary change."},
-  {title:"Tower of God",type:"Webtoon",rating:"8.6",genres:["Action","Fantasy","Adventure"],symbol:"塔",desc:"A mysterious tower offers incredible rewards to those who can survive its challenges."},
-  {title:"The King’s Avatar",type:"Manhua",rating:"8.4",genres:["Action","Drama","Comedy"],symbol:"王",desc:"A veteran esports player starts again and works toward reclaiming his place at the top."},
-  {title:"Battle Through the Heavens",type:"Manhua",rating:"8.3",genres:["Action","Fantasy","Adventure"],symbol:"炎",desc:"A young cultivator sets out to restore his strength and pursue a difficult path to power."},
-  {title:"Re:Zero",type:"Light Novel",rating:"8.6",genres:["Fantasy","Drama","Adventure"],symbol:"零",desc:"An ordinary young man discovers a frightening ability after arriving in another world."},
-  {title:"Classroom of the Elite",type:"Light Novel",rating:"8.3",genres:["Drama","Mystery"],symbol:"学",desc:"Students compete in a demanding school system where strategy can matter more than appearances."},
-  {title:"Mushoku Tensei",type:"Light Novel",rating:"8.5",genres:["Fantasy","Adventure","Drama"],symbol:"魔",desc:"A man receives a second chance at life in a world of magic and adventure."},
-  {title:"The Beginning After the End",type:"Webtoon",rating:"8.5",genres:["Action","Fantasy","Adventure"],symbol:"竜",desc:"A former king begins a new life in a magical world with memories of his past."}
+  {
+    title: "One Piece",
+    type: "Manga",
+    rating: "9.2",
+    genres: ["Action", "Adventure", "Fantasy"],
+    image: "one-piece.jpg",
+    symbol: "海",
+    desc: "Join Monkey D. Luffy and his crew on a grand adventure in search of the legendary One Piece."
+  },
+  {
+    title: "Naruto",
+    type: "Manga",
+    rating: "8.7",
+    genres: ["Action", "Adventure"],
+    image: "Naruto.jpg",
+    symbol: "忍",
+    desc: "A young ninja works to earn recognition and become the leader of his village."
+  },
+  {
+    title: "Berserk",
+    type: "Manga",
+    rating: "9.4",
+    genres: ["Action", "Fantasy", "Drama"],
+    image: "berserk%20(6).jpg",
+    symbol: "剣",
+    desc: "A dark fantasy story following a lone warrior through a brutal and dangerous world."
+  },
+  {
+    title: "Demon Slayer",
+    type: "Manga",
+    rating: "8.5",
+    genres: ["Action", "Fantasy", "Adventure"],
+    image: "demon-slayer.jpg",
+    symbol: "鬼",
+    desc: "Tanjiro joins the Demon Slayer Corps while searching for a way to help his sister."
+  },
+  {
+    title: "Spy x Family",
+    type: "Manga",
+    rating: "8.5",
+    genres: ["Action", "Comedy"],
+    image: "spy-family.jpg",
+    symbol: "X",
+    desc: "A spy, an assassin and a telepath form an unusual family while hiding their secrets."
+  },
+  {
+    title: "Death Note",
+    type: "Manga",
+    rating: "8.8",
+    genres: ["Mystery", "Drama"],
+    image: "death-note.jpg",
+    symbol: "死",
+    desc: "A mysterious notebook draws a gifted student into a dangerous battle of wits."
+  },
+  {
+    title: "Fruits Basket",
+    type: "Manga",
+    rating: "8.5",
+    genres: ["Romance", "Comedy", "Drama"],
+    image: "fruit-basket.jpg",
+    symbol: "花",
+    desc: "A kind-hearted girl discovers the unusual secret behind a troubled family."
+  },
+  {
+    title: "Horimiya",
+    type: "Manga",
+    rating: "8.5",
+    genres: ["Romance", "Comedy", "Drama"],
+    image: "horimiya.jpg",
+    symbol: "恋",
+    desc: "Two classmates discover the sides of each other that they rarely show at school."
+  },
+  {
+    title: "Kaguya-sama: Love Is War",
+    type: "Manga",
+    rating: "8.8",
+    genres: ["Romance", "Comedy"],
+    image: "kaguya-sama-love-is-war.jpg",
+    symbol: "愛",
+    desc: "Two clever student leaders turn romance into a hilarious battle of strategy."
+  },
+  {
+    title: "Blue Lock",
+    type: "Manga",
+    rating: "8.5",
+    genres: ["Sports", "Action", "Drama"],
+    image: "blue-lock.jpg",
+    symbol: "⚽",
+    desc: "Strikers compete in an intense program designed to create Japan's ultimate forward."
+  },
+  {
+    title: "Solo Leveling",
+    type: "Manhwa",
+    rating: "8.7",
+    genres: ["Action", "Fantasy", "Adventure"],
+    image: "solo-leveling.jpg",
+    symbol: "影",
+    desc: "A low-ranked hunter encounters a mysterious system that gives him a chance to grow stronger."
+  },
+  {
+    title: "Omniscient Reader’s Viewpoint",
+    type: "Manhwa",
+    rating: "8.8",
+    genres: ["Action", "Fantasy", "Adventure"],
+    image: "omniscient-reader%27s-view-point.jpg",
+    symbol: "書",
+    desc: "A reader finds the world transformed into the story he alone knows from beginning to end."
+  },
+  {
+    title: "True Beauty",
+    type: "Webtoon",
+    rating: "8.2",
+    genres: ["Romance", "Comedy", "Drama"],
+    image: "true-beauty.jpg",
+    symbol: "美",
+    desc: "A young woman explores confidence, friendship and romance while navigating school life."
+  },
+  {
+    title: "Lookism",
+    type: "Webtoon",
+    rating: "8.4",
+    genres: ["Action", "Drama", "Comedy"],
+    image: "lookism.jpg",
+    symbol: "顔",
+    desc: "A student experiences life from a new perspective after an extraordinary change."
+  },
+  {
+    title: "Tower of God",
+    type: "Webtoon",
+    rating: "8.6",
+    genres: ["Action", "Fantasy", "Adventure"],
+    image: "tower-of-god.jpg",
+    symbol: "塔",
+    desc: "A mysterious tower offers incredible rewards to those who can survive its challenges."
+  },
+  {
+    title: "The King’s Avatar",
+    type: "Manhua",
+    rating: "8.4",
+    genres: ["Action", "Drama", "Comedy"],
+    image: "the-kings-avatar%20(1).jpg",
+    symbol: "王",
+    desc: "A veteran esports player starts again and works toward reclaiming his place at the top."
+  },
+  {
+    title: "Battle Through the Heavens",
+    type: "Manhua",
+    rating: "8.3",
+    genres: ["Action", "Fantasy", "Adventure"],
+    image: "battle-through-the-heavens.jpg",
+    symbol: "炎",
+    desc: "A young cultivator sets out to restore his strength and pursue a difficult path to power."
+  },
+  {
+    title: "Re:Zero",
+    type: "Light Novel",
+    rating: "8.6",
+    genres: ["Fantasy", "Drama", "Adventure"],
+    image: "rezero.jpg",
+    symbol: "零",
+    desc: "An ordinary young man discovers a frightening ability after arriving in another world."
+  },
+  {
+    title: "Classroom of the Elite",
+    type: "Light Novel",
+    rating: "8.3",
+    genres: ["Drama", "Mystery"],
+    image: "classroom-of-the-elite.jpg",
+    symbol: "学",
+    desc: "Students compete in a demanding school system where strategy can matter more than appearances."
+  },
+  {
+    title: "Mushoku Tensei",
+    type: "Light Novel",
+    rating: "8.5",
+    genres: ["Fantasy", "Adventure", "Drama"],
+    image: "mushoku-tensei.jpg",
+    symbol: "魔",
+    desc: "A man receives a second chance at life in a world of magic and adventure."
+  },
+  {
+    title: "The Beginning After the End",
+    type: "Webtoon",
+    rating: "8.5",
+    genres: ["Action", "Fantasy", "Adventure"],
+    image: "the-beginning-after-the-end.jpg",
+    symbol: "竜",
+    desc: "A former king begins a new life in a magical world with memories of his past."
+  }
 ];
 
 const grid = document.getElementById("grid");
@@ -501,7 +657,25 @@ function createCard(item, index) {
 
   const cover = document.createElement("div");
   cover.className = "cover";
-  cover.setAttribute("aria-label", "Original comic-inspired cover for " + item.title);
+
+  const image = document.createElement("img");
+  image.className = "cover-image";
+  image.src = "images/" + item.image;
+  image.alt = item.title + " poster";
+  image.loading = "lazy";
+  image.decoding = "async";
+
+  image.addEventListener("error", function() {
+    image.style.display = "none";
+    cover.style.background =
+      "linear-gradient(145deg, #650710, #111 75%)";
+    cover.setAttribute(
+      "aria-label",
+      "Poster image unavailable for " + item.title
+    );
+  });
+
+  cover.appendChild(image);
 
   const top = document.createElement("div");
   top.className = "cover-top";
@@ -515,15 +689,9 @@ function createCard(item, index) {
 
   top.append(label, number);
 
-  const art = document.createElement("div");
-  art.className = "cover-art";
-
-  const symbol = document.createElement("div");
-  symbol.className = "comic-symbol";
-  symbol.textContent = item.symbol;
-  art.appendChild(symbol);
-
   const bottom = document.createElement("div");
+  bottom.className = "cover-bottom";
+
   const coverTitle = document.createElement("div");
   coverTitle.className = "cover-title";
   coverTitle.textContent = item.title;
@@ -533,7 +701,7 @@ function createCard(item, index) {
   coverType.textContent = item.type;
 
   bottom.append(coverTitle, coverType);
-  cover.append(top, art, bottom);
+  cover.append(top, bottom);
 
   const info = document.createElement("div");
   info.className = "card-info";
@@ -567,6 +735,7 @@ function createCard(item, index) {
 
   info.append(heading, meta, description, button);
   card.append(cover, info);
+
   return card;
 }
 
@@ -583,9 +752,10 @@ function render() {
     ].join(" ").toLowerCase();
 
     const matchesSearch = searchable.includes(query);
-    const matchesType = selectedType === "all" || item.type === selectedType;
-    const matchesGenre = activeGenre === "all" ||
-      item.genres.includes(activeGenre);
+    const matchesType =
+      selectedType === "all" || item.type === selectedType;
+    const matchesGenre =
+      activeGenre === "all" || item.genres.includes(activeGenre);
 
     return matchesSearch && matchesType && matchesGenre;
   });
@@ -596,7 +766,9 @@ function render() {
     grid.appendChild(createCard(item, titles.indexOf(item)));
   });
 
-  count.textContent = filtered.length + (filtered.length === 1 ? " title" : " titles");
+  count.textContent =
+    filtered.length + (filtered.length === 1 ? " title" : " titles");
+
   empty.style.display = filtered.length ? "none" : "block";
 }
 
@@ -607,6 +779,16 @@ function openDetails(item) {
 
   const heading = document.createElement("h2");
   heading.textContent = item.title;
+
+  const poster = document.createElement("img");
+  poster.className = "detail-poster";
+  poster.src = "images/" + item.image;
+  poster.alt = item.title + " poster";
+  poster.loading = "lazy";
+
+  poster.addEventListener("error", function() {
+    poster.style.display = "none";
+  });
 
   const type = document.createElement("p");
   type.textContent = "Collection: " + item.type;
@@ -621,14 +803,22 @@ function openDetails(item) {
   description.textContent = item.desc;
   description.style.lineHeight = "1.8";
 
-  detailContent.append(heading, type, rating, genres, description);
-  detail.scrollIntoView({behavior:"smooth", block:"start"});
+  detailContent.append(
+    heading,
+    poster,
+    type,
+    rating,
+    genres,
+    description
+  );
+
+  detail.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function closeDetails() {
   detail.style.display = "none";
   collection.style.display = "block";
-  collection.scrollIntoView({behavior:"smooth", block:"start"});
+  collection.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 search.addEventListener("input", render);
